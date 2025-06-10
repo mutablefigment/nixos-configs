@@ -32,14 +32,4 @@
 
   programs.home-manager.enable = true;
   services.lorri.enable = true;
-
-  # programs.ssh = {
-  #   enable = true;
-  #   extraConfig = ''
-  #     IdentityAgent /home/anon/.1password/agent.sock
-  #   '';
-
-
-  # };
-
 }
