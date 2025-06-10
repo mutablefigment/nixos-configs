@@ -13,7 +13,12 @@
     };
   };
 
-  programs.nushell.enable = true;
+  programs.nushell = {
+    enable = true;
+    environmentVariables = {
+      SSH_AUTH_SOCK = "/home/anon/.1password/agent.sock";
+    };
+  };
 
   programs.carapace = {
     enable = true;

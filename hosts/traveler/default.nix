@@ -35,7 +35,6 @@
   systemd.services."getty@tty1".enable = false;
   systemd.services."sddm".wants = [ "graphical.target" ];
 
-
   services.yggdrasil = {
     enable = true;
     group = "users";
@@ -67,6 +66,12 @@
       Current = "breeze";
     };
   };
+
+  # Cross compilation for arm devices
+  # nixpkgs.buildPlatform.system = "x86_64-linux";
+  # nixpkgs.hostPlatform.system = "aarch64-linux";
+
+  boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
 
   # Power management for laptops
   services.power-profiles-daemon.enable = true;
@@ -161,8 +166,19 @@
     rnote
     obsidian
 
-    dracula-theme
+    tokyonight-gtk-theme
+    
     gnomeExtensions.tailscale-qs
+    gnomeExtensions.zen
+    gnomeExtensions.binu
+    gnomeExtensions.vitals
+    gnomeExtensions.paperwm
+    gnomeExtensions.switcher
+    gnomeExtensions.taskwhisperer
+    gnomeExtensions.bubblemail
+    gnomeExtensions.user-themes
+
+    gnome-tweaks
 
     ecryptfs
     spotify
