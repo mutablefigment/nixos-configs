@@ -18,7 +18,7 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.tmp.cleanOnBoot = true;
-  boot.plymouth.enable = true;
+  #boot.plymouth.enable = true;
 
   hardware.firmware = [ pkgs.linux-firmware ];
   services.fwupd.enable = true;
@@ -41,12 +41,7 @@
   };
 
   # AMD GPU configuration without ROCm
-  hardware.opengl = {
-  enable = true;
-    extraPackages = with pkgs; [
-        amdvlk
-    ];
-  };
+  hardware.graphics = { enable = true;  };
 
   # Address entropy issues for faster KDE startup
   services.haveged.enable = true;
@@ -61,16 +56,15 @@
   systemd.services.NetworkManager-wait-online.enable = false;
 
   # Disable splash screen for faster startup
-  services.xserver.displayManager.sddm.settings = {
+  services.displayManager.sddm.settings = {
     Theme = {
       Current = "breeze";
     };
   };
 
   # Cross compilation for arm devices
-  # nixpkgs.buildPlatform.system = "x86_64-linux";
-  # nixpkgs.hostPlatform.system = "aarch64-linux";
-
+  # nixpkgs.buildPlatform.system = "aarch64-linux";
+  # nixpkgs.hostPlatform.system = "x86_64-linux"; 
   boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
 
   # Power management for laptops
@@ -129,8 +123,8 @@
   };
 
   # Enable touchpad support (enabled default in most desktopManager).
-  services.xserver.libinput.enable = true;
-
+  services.libinput.enable = true;
+  
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.anon = {
     isNormalUser = true;

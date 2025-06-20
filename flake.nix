@@ -34,11 +34,6 @@
     agenix.url = "github:ryantm/agenix";
     agenix.inputs.nixpkgs.follows = "nixpkgs";
 
-    # For running llama on my desktop
-    llama-cpp = {
-      url = "github:ggerganov/llama.cpp";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
 
     ssh-keys = {
       url = "https://github.com/mutablefigment.keys";
@@ -60,11 +55,9 @@
       lanzaboote,
       home-manager,
       agenix,
-      llama-cpp,
       helix,
       ssh-keys,
       nixos-hardware,
-      deploy-rs,
       ...
   } @ inputs :
   let

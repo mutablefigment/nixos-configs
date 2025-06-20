@@ -6,8 +6,6 @@
   # need on all systems
   home.packages = with pkgs; [
     signal-desktop
-    bitwarden
-    tilix
     waypipe
 
     dino
