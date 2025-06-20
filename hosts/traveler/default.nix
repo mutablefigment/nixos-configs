@@ -166,20 +166,6 @@
     rnote
     obsidian
 
-    tokyonight-gtk-theme
-    
-    gnomeExtensions.tailscale-qs
-    gnomeExtensions.zen
-    gnomeExtensions.binu
-    gnomeExtensions.vitals
-    gnomeExtensions.paperwm
-    gnomeExtensions.switcher
-    gnomeExtensions.taskwhisperer
-    gnomeExtensions.bubblemail
-    gnomeExtensions.user-themes
-
-    gnome-tweaks
-
     ecryptfs
     spotify
     quasselClient
