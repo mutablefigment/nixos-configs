@@ -15,10 +15,20 @@
     ];
 
   # Bootloader.
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
+  
   boot.tmp.cleanOnBoot = true;
   #boot.plymouth.enable = true;
+  # Lanzaboote currently replaces the systemd-boot module.
+  # This setting is usually set to true in configuration.nix
+  # generated at installation time. So we force it to false
+  # for now.
+  boot.loader.systemd-boot.enable = lib.mkForce false;
+
+  boot.lanzaboote = {
+    enable = true;
+    pkiBundle = "/var/lib/sbctl";
+  };
+
 
   hardware.firmware = [ pkgs.linux-firmware ];
   services.fwupd.enable = true;
@@ -75,7 +85,18 @@
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Enable networking
-  networking.networkmanager.enable = true;
+  networking.networkmanager = {
+    enable = true;
+    enableStrongSwan = true;
+    plugins = with pkgs; [ networkmanager-l2tp ];
+  };
+
+  services.strongswan = {
+    enable = true;
+    secrets = [
+      "ipsec.d/ipsec.nm-l2tp.secrets"
+    ];
+  };
 
   # Set your time zone.
   time.timeZone = "Europe/Berlin";
@@ -159,6 +180,7 @@
     surface-control
     rnote
     obsidian
+    sbctl
 
     ecryptfs
     spotify
@@ -175,6 +197,15 @@
     element-desktop
     corectrl
     iamb
+    discord
+    wasistlos
+
+    # Gnome stuff
+    tokyonight-gtk-theme
+
+    gnomeExtensions.tailscale-qs
+    gnomeExtensions.user-themes
+    gnome-tweaks
   ];
 
   # Enable the unfree 1Password packages
