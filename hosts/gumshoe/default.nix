@@ -62,6 +62,7 @@
      anytype
      tor-browser-bundle-bin
      krita
+     deskflow
   ];
 
     # Enable the unfree 1Password packages

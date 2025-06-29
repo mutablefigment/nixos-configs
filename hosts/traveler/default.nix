@@ -29,6 +29,7 @@
     pkiBundle = "/var/lib/sbctl";
   };
 
+  boot.plymouth.enable = true;
 
   hardware.firmware = [ pkgs.linux-firmware ];
   services.fwupd.enable = true;
@@ -36,6 +37,13 @@
   hardware.enableRedistributableFirmware = true;
 
   boot.kernelPackages = pkgs.linuxPackages_latest;
+  boot.kernelParams = [
+    "amd_iommu=on"
+    "iommu=pt"
+    "quiet"
+    "loglevel=3"
+    "mem_encryption=on"
+  ];
 
   systemd.services.plasma-waitforname = {
     serviceConfig.TimeoutStartSec = "10s";
@@ -59,7 +67,7 @@
   # Bluetooth configuration to prevent waiting
   hardware.bluetooth = {
     enable = true;
-    powerOnBoot = false;  # Prevent startup delays
+    powerOnBoot = true;  # Prevent startup delays
   };
 
   # Network optimization
@@ -184,6 +192,7 @@
 
     ecryptfs
     spotify
+    deskflow
     quasselClient
 
     keepassxc
