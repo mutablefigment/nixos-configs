@@ -2,20 +2,26 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, lib, amdgpu-stability-patch, ... }:
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-      ../../modules/system.nix
-      ../../modules/desktop.nix
-      ../../modules/firejail.nix
-      ../../modules/tmux.nix
-      ./hardware-configuration.nix
-    ];
+  pkgs,
+  lib,
+  ...
+}:
+{
+  imports = [
+    # Include the results of the hardware scan.
+    ./hardware-configuration.nix
+    ../../modules/system.nix
+    ../../modules/desktop.nix
+    ../../modules/firejail.nix
+    ../../modules/tmux.nix
+    ./hardware-configuration.nix
+
+    ./docker-compose.nix
+  ];
 
   # Bootloader.
-  
+
   boot.tmp.cleanOnBoot = true;
   #boot.plymouth.enable = true;
   # Lanzaboote currently replaces the systemd-boot module.
@@ -59,7 +65,9 @@
   };
 
   # AMD GPU configuration without ROCm
-  hardware.graphics = { enable = true;  };
+  hardware.graphics = {
+    enable = true;
+  };
 
   # Address entropy issues for faster KDE startup
   services.haveged.enable = true;
@@ -67,7 +75,7 @@
   # Bluetooth configuration to prevent waiting
   hardware.bluetooth = {
     enable = true;
-    powerOnBoot = true;  # Prevent startup delays
+    powerOnBoot = true; # Prevent startup delays
   };
 
   # Network optimization
@@ -82,13 +90,14 @@
 
   # Cross compilation for arm devices
   # nixpkgs.buildPlatform.system = "aarch64-linux";
-  # nixpkgs.hostPlatform.system = "x86_64-linux"; 
+  # nixpkgs.hostPlatform.system = "x86_64-linux";
   boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
 
   # Power management for laptops
   services.power-profiles-daemon.enable = true;
 
-  boot.initrd.luks.devices."luks-4512d510-2625-468f-94b8-4d8daafd21d3".device = "/dev/disk/by-uuid/4512d510-2625-468f-94b8-4d8daafd21d3";
+  boot.initrd.luks.devices."luks-4512d510-2625-468f-94b8-4d8daafd21d3".device =
+    "/dev/disk/by-uuid/4512d510-2625-468f-94b8-4d8daafd21d3";
   networking.hostName = "traveler"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
@@ -153,12 +162,15 @@
 
   # Enable touchpad support (enabled default in most desktopManager).
   services.libinput.enable = true;
-  
+
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.anon = {
     isNormalUser = true;
     description = "anon";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [
+      "networkmanager"
+      "wheel"
+    ];
     packages = with pkgs; [
       kdePackages.kate
       _1password-gui
@@ -215,13 +227,38 @@
     gnomeExtensions.tailscale-qs
     gnomeExtensions.user-themes
     gnome-tweaks
+
+    pulseview
+    arion
   ];
 
+  # Arion works with Docker, but for NixOS-based containers, you need Podman
+  # since NixOS 21.05.
+  virtualisation.docker.enable = false;
+  virtualisation.podman.enable = true;
+  virtualisation.podman.dockerSocket.enable = true;
+
+  # King logic analysis toolsudev rules
+  services.udev.extraRules = ''
+    SUBSYSTEM=="usb", ENV{DEVTYPE}=="usb_device", ATTR{idVendor}=="77a1", ATTR{idProduct}=="01a1", MODE="0666"
+    SUBSYSTEM=="usb", ENV{DEVTYPE}=="usb_device", ATTR{idVendor}=="77a1", ATTR{idProduct}=="01a2", MODE="0666"
+    SUBSYSTEM=="usb", ENV{DEVTYPE}=="usb_device", ATTR{idVendor}=="77a1", ATTR{idProduct}=="01a3", MODE="0666"
+    SUBSYSTEM=="usb", ENV{DEVTYPE}=="usb_device", ATTR{idVendor}=="77a1", ATTR{idProduct}=="01a4", MODE="0666"
+    SUBSYSTEM=="usb", ENV{DEVTYPE}=="usb_device", ATTR{idVendor}=="77a1", ATTR{idProduct}=="02a1", MODE="0666"
+    SUBSYSTEM=="usb", ENV{DEVTYPE}=="usb_device", ATTR{idVendor}=="77a1", ATTR{idProduct}=="02a2", MODE="0666"
+    SUBSYSTEM=="usb", ENV{DEVTYPE}=="usb_device", ATTR{idVendor}=="77a1", ATTR{idProduct}=="02a3", MODE="0666"
+    SUBSYSTEM=="usb", ENV{DEVTYPE}=="usb_device", ATTR{idVendor}=="77a1", ATTR{idProduct}=="03a1", MODE="0666"
+    SUBSYSTEM=="usb", ENV{DEVTYPE}=="usb_device", ATTR{idVendor}=="77a1", ATTR{idProduct}=="03a2", MODE="0666"
+    SUBSYSTEM=="usb", ENV{DEVTYPE}=="usb_device", ATTR{idVendor}=="77a1", ATTR{idProduct}=="03a3", MODE="0666"
+  '';
+
   # Enable the unfree 1Password packages
-  nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
-    "1password-gui"
-    "1password"
-  ];
+  nixpkgs.config.allowUnfreePredicate =
+    pkg:
+    builtins.elem (lib.getName pkg) [
+      "1password-gui"
+      "1password"
+    ];
   # Alternatively, you could also just allow all unfree packages
   # nixpkgs.config.allowUnfree = true;
 
@@ -234,8 +271,8 @@
   };
 
   environment.variables = {
-      SSH_AUTH_SOCK = "/home/anon/.1password/agent.sock";
-      SSH_AUTH_SOCKET = "/home/anon/.1password/agent.sock";
+    SSH_AUTH_SOCK = "/home/anon/.1password/agent.sock";
+    SSH_AUTH_SOCKET = "/home/anon/.1password/agent.sock";
   };
 
   services.tailscale = {

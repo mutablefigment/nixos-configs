@@ -1,7 +1,8 @@
 {
   pkgs,
   ...
-}: {
+}:
+{
 
   programs.vscode = {
     enable = true;
@@ -10,7 +11,7 @@
       github.copilot
       github.copilot-chat
       ms-python.python
-      golang.go 
+      golang.go
       ziglang.vscode-zig
       enkia.tokyo-night
       bbenoist.nix

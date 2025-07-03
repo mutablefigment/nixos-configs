@@ -3,7 +3,10 @@
 
   # Enable flakes
   nixConfig = {
-    experimental-features = [ "nix-command" "flakes" ];
+    experimental-features = [
+      "nix-command"
+      "flakes"
+    ];
     auto-optimise-store = true;
     allowed-users = [ "anon" ];
     extra-substituters = [
@@ -34,7 +37,6 @@
     agenix.url = "github:ryantm/agenix";
     agenix.inputs.nixpkgs.follows = "nixpkgs";
 
-
     ssh-keys = {
       url = "https://github.com/mutablefigment.keys";
       flake = false;
@@ -49,7 +51,8 @@
     _1password-shell-plugins.url = "github:1Password/shell-plugins";
   };
 
-  outputs = {
+  outputs =
+    {
       self,
       nixpkgs,
       lanzaboote,
@@ -59,59 +62,93 @@
       ssh-keys,
       nixos-hardware,
       ...
-  } @ inputs :
-  let
-    inherit (self) outputs;
-    lib = nixpkgs.lib // home-manager.lib;
-  in
-  {
-    inherit lib;
+    }@inputs:
+    let
+      inherit (self) outputs;
+      lib = nixpkgs.lib // home-manager.lib;
+    in
+    {
+      inherit lib;
 
+      nixosConfigurations = {
 
-    nixosConfigurations = {
+        gumshoe = lib.nixosSystem {
+          modules = [
 
-      gumshoe = lib.nixosSystem
-      {
-        modules =
-        [
+            lanzaboote.nixosModules.lanzaboote
+            ./hosts/gumshoe
 
-          lanzaboote.nixosModules.lanzaboote
-          ./hosts/gumshoe
+            home-manager.nixosModules.home-manager
+            {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
 
-          home-manager.nixosModules.home-manager
-          {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
+              home-manager.users.anon = import ./home/home-desktop;
+              home-manager.extraSpecialArgs = { inherit inputs; };
+            }
+          ];
 
-            home-manager.users.anon = import ./home/home-desktop;
-            home-manager.extraSpecialArgs = { inherit inputs; };
-          }
-        ];
+          specialArgs = {
+            inherit
+              inputs
+              outputs
+              ssh-keys
+              nixos-hardware
+              ;
+          };
+        };
 
-        specialArgs = { inherit inputs outputs ssh-keys nixos-hardware; };
-      };
+        traveler = lib.nixosSystem {
+          modules = [
+            nixos-hardware.nixosModules.lenovo-thinkpad-z13-gen1
 
-      traveler = lib.nixosSystem
-      {
-        modules =
-        [
-          nixos-hardware.nixosModules.lenovo-thinkpad-z13-gen1
+            lanzaboote.nixosModules.lanzaboote
+            ./hosts/traveler
 
-          lanzaboote.nixosModules.lanzaboote
-          ./hosts/traveler
+            home-manager.nixosModules.home-manager
+            {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
 
-          home-manager.nixosModules.home-manager
-          {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
+              home-manager.users.anon = import ./home/home-desktop;
+              home-manager.extraSpecialArgs = { inherit inputs; };
+            }
+          ];
 
-            home-manager.users.anon = import ./home/home-desktop;
-            home-manager.extraSpecialArgs = { inherit inputs; };
-          }
-        ];
+          specialArgs = {
+            inherit
+              inputs
+              outputs
+              ssh-keys
+              nixos-hardware
+              ;
+          };
+        };
 
-        specialArgs = { inherit inputs outputs ssh-keys nixos-hardware; };
+        describe = lib.nixosSystem {
+          modules = [
+            lanzaboote.nixosModules.lanzaboote
+            ./hosts/describe
+
+            home-manager.nixosModules.home-manager
+            {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+
+              home-manager.users.anon = import ./home/home-desktop;
+              home-manager.extraSpecialArgs = { inherit inputs; };
+            }
+          ];
+
+          specialArgs = {
+            inherit
+              inputs
+              outputs
+              ssh-keys
+              nixos-hardware
+              ;
+          };
+        };
       };
     };
-  };
 }

@@ -1,7 +1,7 @@
 {
-  pkgs,
   ...
-}: {
+}:
+{
   programs.emacs = {
     enable = true;
     extraPackages = epkgs: [
@@ -24,12 +24,12 @@
               (package-install 'cider))
 
       (unless (package-installed-p 'clojure-mode)
-              (package-install 'clojure-mode))          
+              (package-install 'clojure-mode))
 
       (use-package flycheck
           :ensure t
           :config
-          (add-hook 'after-init-hook #'global-flycheck-mode))   
+          (add-hook 'after-init-hook #'global-flycheck-mode))
     '';
   };
 }

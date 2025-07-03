@@ -44,6 +44,7 @@
       "disk"
       "dialout"
       "plugdev"
+      "podman"
     ];
     openssh.authorizedKeys.keyFiles = [ ssh-keys.outPath ];
   };
