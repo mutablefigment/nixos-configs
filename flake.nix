@@ -124,32 +124,33 @@
               ;
           };
 
-          describe = lib.nixosSystem {
+        };
 
-            modules = [
-              lanzaboote.nixosModules.lanzaboote
-              ./hosts/describe
-              home-manager.nixosModules.home-manager
+        describe = lib.nixosSystem {
 
-              {
-                home-manager.useGlobalPkgs = true;
-                home-manager.useUserPackages = true;
+          modules = [
+            lanzaboote.nixosModules.lanzaboote
+            ./hosts/describe
+            home-manager.nixosModules.home-manager
 
-                home-manager.users.anon = import ./home/home-desktop;
-                home-manager.extraSpecialArgs = { inherit inputs; };
+            {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
 
-              }
+              home-manager.users.anon = import ./home/home-desktop;
+              home-manager.extraSpecialArgs = { inherit inputs; };
 
-            ];
+            }
 
-            specialArgs = {
-              inherit
-                inputs
-                outputs
-                ssh-keys
-                nixos-hardware
-                ;
-            };
+          ];
+
+          specialArgs = {
+            inherit
+              inputs
+              outputs
+              ssh-keys
+              nixos-hardware
+              ;
           };
         };
       };
