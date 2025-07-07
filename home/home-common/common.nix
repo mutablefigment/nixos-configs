@@ -27,5 +27,6 @@
 
     btop
     mosh
+    devenv
   ];
 }

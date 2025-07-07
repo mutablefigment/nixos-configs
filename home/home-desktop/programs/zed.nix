@@ -1,7 +1,8 @@
 {
   pkgs,
   ...
-}: {
+}:
+{
 
   home.file.".zed_server".source = "${pkgs.zed-editor.remote_server}/bin";
 
@@ -27,6 +28,7 @@
       };
       vim_mode = false;
       theme = "Tokyo Night";
+      load_direnv = "shell_hook";
     };
   };
 }

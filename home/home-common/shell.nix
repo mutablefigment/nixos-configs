@@ -1,7 +1,8 @@
 {
   pkgs,
   ...
-}: {
+}:
+{
 
   programs.starship = {
     enable = true;
@@ -23,6 +24,12 @@
     enableNushellIntegration = true;
     enableZshIntegration = true;
     enableFishIntegration = true;
+  };
+
+  programs.direnv = {
+    enable = true;
+    enableBashIntegration = true;
+    enableZshIntegration = true;
   };
 
   programs.broot.enable = true;
