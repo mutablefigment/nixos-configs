@@ -1,15 +1,15 @@
 {
   pkgs,
   ...
-}:
+}: 
 let
   name = "Mutable";
   email = "gh@mutablefigment.xyz";
   signkey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIOU+iWnGXqMpNj5wZOXN7/IpEz7Cavarzs2rM7RS/aq";
-in
+in 
 {
-  home.packages = [
-    pkgs.gh
+  home.packages = [ 
+    pkgs.gh 
   ];
 
   programs.git = {

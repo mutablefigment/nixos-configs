@@ -1,8 +1,8 @@
-{ 
-  config, 
-  pkgs, 
-  ssh-keys, 
-  ... 
+{
+  config,
+  pkgs,
+  ssh-keys,
+  ...
 }:
 {
   # Set your time zone.
@@ -24,7 +24,7 @@
   };
 
   security.rtkit.enable = true;
-  users.defaultUserShell = pkgs.nushell;
+  users.defaultUserShell = pkgs.zsh;
   programs.zsh.enable = true;
   users.users.root.ignoreShellProgramCheck = true;
   users.users.anon.ignoreShellProgramCheck = true;
@@ -32,7 +32,7 @@
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.anon = {
     isNormalUser = true;
-    shell = pkgs.nushell;
+    shell = pkgs.zsh;
     description = "anon";
     extraGroups = [
       "networkmanager"
@@ -52,7 +52,10 @@
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
   nix = {
-    settings.experimental-features = [ "nix-command" "flakes" ];
+    settings.experimental-features = [
+      "nix-command"
+      "flakes"
+    ];
 
     # use distributed builds
     distributedBuilds = true;
@@ -96,10 +99,10 @@
     #   #   protocol = "ssh";
     #   #   maxJobs = 16;
     #   #   speedFactor = 32;
-    #   #   supportedFeatures = [     
+    #   #   supportedFeatures = [
     #   #   maxJobs = 16;
     #   #   speedFactor = 32;
-    #   #   supportedFeatures = [     
+    #   #   supportedFeatures = [
     #   #     "nixos-test"
     #   #     "benchmark"
     #   #     "big-parallel"
@@ -110,7 +113,7 @@
     # ];
     settings = {
 
-      trusted-users = [ 
+      trusted-users = [
         "anon"
         "root"
         "@wheel"
@@ -120,7 +123,7 @@
         "https://nix-community.cachix.org"
         "https://cache.nixos.org/"
       ];
-      
+
       trusted-public-keys = [
         "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
       ];

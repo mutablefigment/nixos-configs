@@ -5,16 +5,14 @@
 
   programs.starship = {
     enable = true;
-    enableFishIntegration = true;
     enableZshIntegration = true;
-    enableNushellIntegration = true;
     settings = {
       add_newline = true;
     };
   };
 
   programs.nushell = {
-    enable = true;
+    enable = false;
     environmentVariables = {
       SSH_AUTH_SOCK = "/home/anon/.1password/agent.sock";
     };
@@ -23,6 +21,8 @@
   programs.carapace = {
     enable = true;
     enableNushellIntegration = true;
+    enableZshIntegration = true;
+    enableFishIntegration = true;
   };
 
   programs.broot.enable = true;

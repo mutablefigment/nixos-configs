@@ -3,8 +3,10 @@
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
 {
+  config,
   pkgs,
   lib,
+  amdgpu-stability-patch,
   ...
 }:
 {
@@ -17,7 +19,7 @@
     ../../modules/tmux.nix
     ./hardware-configuration.nix
 
-    ./docker-compose.nix
+    # ./docker-compose.nix
   ];
 
   # Bootloader.
@@ -33,6 +35,13 @@
   boot.lanzaboote = {
     enable = true;
     pkiBundle = "/var/lib/sbctl";
+  };
+
+  boot.initrd = {
+    luks.devices."crypt-root" = {
+      device = "/dev/disk/by-uuid/044db8a5-9b65-4350-8751-46b9e7b43b7f";
+      crypttabExtraOpts = [ "fido2-device=auto" ];
+    };
   };
 
   boot.plymouth.enable = true;
@@ -96,16 +105,19 @@
   # Power management for laptops
   services.power-profiles-daemon.enable = true;
 
-  boot.initrd.luks.devices."luks-4512d510-2625-468f-94b8-4d8daafd21d3".device =
-    "/dev/disk/by-uuid/4512d510-2625-468f-94b8-4d8daafd21d3";
   networking.hostName = "traveler"; # Define your hostname.
+  networking.hostId = "53cbda52";
+
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Enable networking
   networking.networkmanager = {
     enable = true;
-    enableStrongSwan = true;
-    plugins = with pkgs; [ networkmanager-l2tp ];
+    #enableStrongSwan = true;
+    plugins = with pkgs; [
+      networkmanager-l2tp
+      networkmanager-strongswan
+    ];
   };
 
   services.strongswan = {
@@ -230,12 +242,15 @@
 
     pulseview
     arion
+
+    nil
+    nixd
   ];
 
   # Arion works with Docker, but for NixOS-based containers, you need Podman
   # since NixOS 21.05.
-  virtualisation.docker.enable = false;
-  virtualisation.podman.enable = true;
+  virtualisation.docker.enable = true;
+  virtualisation.podman.enable = false;
   virtualisation.podman.dockerSocket.enable = true;
 
   # King logic analysis toolsudev rules

@@ -11,13 +11,26 @@
     #./kitty.nix
   ];
 
-  programs.ghostty = {
+  programs.wezterm = {
    enable = true;
-    enableFishIntegration = true;
-    settings = {
-      theme = "tokyonight";
-      font-size = 10.5;
-    };
+    enableZshIntegration = true;
+    extraConfig = ''-- Your lua code / config here
+      return {
+        font = wezterm.font("JetBrains Mono"),
+        font_size = 12.0,
+        color_scheme = "Tokyo Night",
+        hide_tab_bar_if_only_one_tab = true,
+        -- default_prog = { "zsh", "--login", "-c", "tmux attach -t dev || tmux new -s dev" },
+        keys = {
+          {key="n", mods="SHIFT|CTRL", action="ToggleFullScreen"},
+        }
+      }
+    '';
+
+    # settings = {
+    #   theme = "tokyonight";
+    #   font-size = 10.5;
+    # };
   };
 
   programs.helix = {

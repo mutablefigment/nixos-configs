@@ -80,7 +80,7 @@
 
             home-manager.nixosModules.home-manager
             {
-              home-manager.useGlobalPkgs = true;
+              home-manager.useGlobalPkgs = false;
               home-manager.useUserPackages = true;
 
               home-manager.users.anon = import ./home/home-desktop;
@@ -104,31 +104,6 @@
 
             lanzaboote.nixosModules.lanzaboote
             ./hosts/traveler
-
-            home-manager.nixosModules.home-manager
-            {
-              home-manager.useGlobalPkgs = true;
-              home-manager.useUserPackages = true;
-
-              home-manager.users.anon = import ./home/home-desktop;
-              home-manager.extraSpecialArgs = { inherit inputs; };
-            }
-          ];
-
-          specialArgs = {
-            inherit
-              inputs
-              outputs
-              ssh-keys
-              nixos-hardware
-              ;
-          };
-        };
-
-        describe = lib.nixosSystem {
-          modules = [
-            lanzaboote.nixosModules.lanzaboote
-            ./hosts/describe
 
             home-manager.nixosModules.home-manager
             {
