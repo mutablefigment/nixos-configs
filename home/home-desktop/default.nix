@@ -7,6 +7,8 @@
   imports = [
     ./programs
     ../home-common
+
+    ./sway.nix
   ];
 
   home = {

@@ -28,5 +28,6 @@
     btop
     mosh
     devenv
+    alacritty
   ];
 }

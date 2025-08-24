@@ -33,6 +33,20 @@
     # };
   };
 
+  programs.ghostty = {
+    enable = true;
+    enableZshIntegration = true;
+    settings = {
+      theme = "tokyonight";
+      font-family = "IBM Plex Mono";
+    };
+  };
+
+  programs.alacritty = {
+    enable = true;
+    theme = "tokyo_night";
+  };
+
   programs.helix = {
     enable = true;
     settings.theme = "tokyonight";
