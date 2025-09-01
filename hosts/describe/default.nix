@@ -89,6 +89,9 @@
     zig
     go
     keymapp
+    discord
+
+    jetbrains-toolbox
   ];
 
   programs.dconf.profiles.user.databases = [

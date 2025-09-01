@@ -3,7 +3,8 @@
   pkgs,
   inputs,
   ...
-}: {
+}:
+{
 
   programs = {
     chromium = {
@@ -24,10 +25,10 @@
           "privacy.donottrackheader.enabled" = true;
           "privacy.fingerprintingProtection" = true;
         };
-                
+
         extensions.packages = with inputs.firefox-addons.packages."x86_64-linux"; [
           ublock-origin
-          sponsorblock
+          #sponsorblock
           darkreader
           youtube-shorts-block
         ];

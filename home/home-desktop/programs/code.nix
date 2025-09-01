@@ -1,7 +1,8 @@
 {
   pkgs,
   ...
-}: {
+}:
+{
 
   programs.vscode = {
     enable = true;
@@ -9,8 +10,8 @@
     profiles.default.extensions = with pkgs.vscode-extensions; [
       github.copilot
       github.copilot-chat
-      ms-python.python
-      golang.go 
+      # ms-python.python
+      golang.go
       ziglang.vscode-zig
       enkia.tokyo-night
       bbenoist.nix

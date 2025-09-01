@@ -1,5 +1,6 @@
 {
   pkgs,
+  lib,
   ...
 }:
 {
@@ -29,6 +30,14 @@
       vim_mode = false;
       theme = "Tokyo Night";
       load_direnv = "shell_hook";
+      dap = {
+        CodeLLDB = {
+          binary = lib.getExe' pkgs.lldb_21 "lldb-dap";
+        };
+        Delve = {
+          binary = lib.getExe' pkgs.delve "dlv-dap";
+        };
+      };
     };
   };
 }
