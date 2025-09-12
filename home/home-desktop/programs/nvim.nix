@@ -7,12 +7,23 @@
     viAlias = true;
     vimAlias = true;
 
-    plugins = [
-      pkgs.vimPlugins.nvim-tree-lua
+    plugins = with pkgs.vimPlugins; [
+      nvim-lspconfig
+      nvim-treesitter.withAllGrammars
+      plenary-nvim
+      gruvbox-material
+      mini-nvim
+      nvim-tree-lua
       {
-        plugin = pkgs.vimPlugins.vim-startify;
+        plugin = vim-startify;
         config = "let g:startify_change_to_vcs_root = 0";
       }
     ];
+
+
+    extraConfig = ''
+      set number relativenumber
+      set tabstop=2
+    '';
   };
 }

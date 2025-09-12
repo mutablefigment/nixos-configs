@@ -49,6 +49,7 @@
     deploy-rs.url = "github:serokell/deploy-rs";
 
     _1password-shell-plugins.url = "github:1Password/shell-plugins";
+
   };
 
   outputs =
@@ -65,7 +66,15 @@
     }@inputs:
     let
       inherit (self) outputs;
-      lib = nixpkgs.lib // home-manager.lib;
+      lib = nixpkgs.lib // home-manager.lib;        
+      system = "x86_64-linux";
+      pkgs = import nixpkgs {
+        inherit system;
+        config = { allowUnfree = true; };
+        overlays = [
+          (import ./overlays/anytype-overlay.nix)
+        ];
+      };
     in
     {
       inherit lib;
@@ -126,22 +135,19 @@
 
         };
 
-        describe = lib.nixosSystem {
-
+        pve = lib.nixosSystem {
           modules = [
             lanzaboote.nixosModules.lanzaboote
-            ./hosts/describe
-            home-manager.nixosModules.home-manager
+            ./hosts/pve
 
+            home-manager.nixosModules.home-manager
             {
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
 
-              home-manager.users.anon = import ./home/home-desktop;
+              home-manager.users.anon = import ./home/home-servers;
               home-manager.extraSpecialArgs = { inherit inputs; };
-
             }
-
           ];
 
           specialArgs = {
@@ -152,6 +158,46 @@
               nixos-hardware
               ;
           };
+
+        };
+
+        describe = lib.nixosSystem {
+          specialArgs = {
+            inherit
+              inputs
+              outputs
+              ssh-keys
+              nixos-hardware
+              ;
+          };
+
+          modules = [
+            # Apply overlays to the system
+            ({ config, pkgs, ... }: {
+              nixpkgs.overlays = [
+                # (import ./overlays/anytype-overlay.nix)
+              ];
+              nixpkgs.config.allowUnfree = true;
+            })
+
+            lanzaboote.nixosModules.lanzaboote
+            ./hosts/describe
+            home-manager.nixosModules.home-manager
+
+            ({ config, pkgs, ... }: {
+              environment.systemPackages = with pkgs; [
+                anytype
+              ];
+            })
+
+            {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+
+              home-manager.users.anon = import ./home/home-desktop;
+              home-manager.extraSpecialArgs = { inherit inputs; };
+            }
+          ];
         };
       };
     };

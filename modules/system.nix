@@ -45,6 +45,7 @@
       "dialout"
       "plugdev"
       "podman"
+      "incus-admin"
     ];
     openssh.authorizedKeys.keyFiles = [ ssh-keys.outPath ];
   };
