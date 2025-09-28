@@ -34,6 +34,9 @@
   #    crypttabExtraOpts = [ "fido2-device=auto" ];
   #  };
   #};
+
+
+  boot.initrd.luks.devices."luks-1298942c-b730-4809-a285-ec94bc7c7047".device = "/dev/disk/by-uuid/1298942c-b730-4809-a285-ec94bc7c7047";
   networking.hostName = "describe"; # Define your hostname.
   # Pick only one of the below networking options.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
