@@ -37,19 +37,19 @@
     enable = true;
     enableZshIntegration = true;
     settings = {
-      theme = "tokyonight";
+      theme = "Dracula";
       font-family = "IBM Plex Mono";
     };
   };
 
   programs.alacritty = {
-    enable = true;
+    enable = false;
     theme = "tokyo_night";
   };
 
   programs.helix = {
     enable = true;
-    settings.theme = "tokyonight";
+    settings.theme = "dracula";
   };
 
 }

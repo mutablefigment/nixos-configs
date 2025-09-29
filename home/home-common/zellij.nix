@@ -4,7 +4,7 @@
 }:
 {
   programs.zellij = {
-    enable = false;
+    enable = true;
     enableZshIntegration = true;
 
     settings = {

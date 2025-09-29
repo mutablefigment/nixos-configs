@@ -13,7 +13,7 @@
   };
 
   programs.nushell = {
-    enable = false;
+    enable = true;
     environmentVariables = {
       SSH_AUTH_SOCK = "/home/anon/.1password/agent.sock";
     };
