@@ -9,6 +9,7 @@
     ../home-common
 
     ./sway.nix
+    ./kde.nix
   ];
 
   home = {
@@ -26,7 +27,10 @@
     age-plugin-yubikey
     rage
     wl-clipboard-rs
-  ];
+
+    obsidian
+    claude-code
+   ];
 
   programs.home-manager.enable = true;
   services.lorri.enable = true;
