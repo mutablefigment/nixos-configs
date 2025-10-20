@@ -59,11 +59,8 @@
     };
   };
 
-  # Ensure the Haiku theme is available
-  # Note: This theme is installed locally at ~/.local/share/plasma/look-and-feel/org.magpie.besot.haiku.desktop
-  # You may need to package it or keep it as a user-installed theme
-  home.file.".local/share/plasma/look-and-feel/org.magpie.besot.haiku.desktop" = {
-    source = /home/anon/.local/share/plasma/look-and-feel/org.magpie.besot.haiku.desktop;
-    recursive = true;
-  };
+  # Note: The Haiku Desktop theme (org.magpie.besot.haiku.desktop) is installed locally
+  # at ~/.local/share/plasma/look-and-feel/org.magpie.besot.haiku.desktop
+  # This configuration references it but doesn't manage the theme files themselves.
+  # The theme will need to remain manually installed for now.
 }

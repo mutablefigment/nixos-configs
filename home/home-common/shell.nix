@@ -39,6 +39,14 @@
     enableCompletion = true;
     oh-my-zsh.enable = true;
 
+    shellAliases = {
+      # Tmux session management
+      "tm" = "tmux attach -t main || tmux new-session -s main";
+      "tma" = "tmux attach -t main";
+      "tmd" = "tmux detach";
+      "tml" = "tmux list-sessions";
+    };
+
     plugins = [
       {
         name = "zsh-nix-shell";

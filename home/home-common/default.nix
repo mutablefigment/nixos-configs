@@ -7,7 +7,8 @@
     ./common.nix
     ./shell.nix
     ./tmux.nix
-    #./zellij.nix
+    ./zellij.nix
+    ./helix.nix
     #./kitty.nix
   ];
 
@@ -37,7 +38,7 @@
     enable = true;
     enableZshIntegration = true;
     settings = {
-      theme = "Dracula";
+      theme = "Gruvbox Dark Hard";
       font-family = "IBM Plex Mono";
     };
   };
@@ -46,10 +47,4 @@
     enable = false;
     theme = "tokyo_night";
   };
-
-  programs.helix = {
-    enable = true;
-    settings.theme = "dracula";
-  };
-
 }

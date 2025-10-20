@@ -2,26 +2,27 @@
   pkgs,
   ...
 }:
-let
-  # Extensions not in nixpkgs
-  vscode-dance = pkgs.vscode-utils.buildVscodeMarketplaceExtension {
-    mktplcRef = {
-      name = "dance";
-      publisher = "gregoire";
-      version = "0.5.19";
-      sha256 = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
-    };
-  };
-
-  vscode-dance-helix = pkgs.vscode-utils.buildVscodeMarketplaceExtension {
-    mktplcRef = {
-      name = "dance-helix";
-      publisher = "gregoire";
-      version = "0.1.3";
-      sha256 = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
-    };
-  };
-in
+# let
+#   # Extensions not in nixpkgs
+#   # Note: These need valid sha256 hashes to build. Install manually from VS Code marketplace for now.
+#   vscode-dance = pkgs.vscode-utils.buildVscodeMarketplaceExtension {
+#     mktplcRef = {
+#       name = "dance";
+#       publisher = "gregoire";
+#       version = "0.5.19";
+#       sha256 = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
+#     };
+#   };
+#
+#   vscode-dance-helix = pkgs.vscode-utils.buildVscodeMarketplaceExtension {
+#     mktplcRef = {
+#       name = "dance-helix";
+#       publisher = "gregoire";
+#       version = "0.1.3";
+#       sha256 = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
+#     };
+#   };
+# in
 {
 
   programs.vscode = {
@@ -51,13 +52,11 @@ in
       # Utilities
       mkhl.direnv
       vadimcn.vscode-lldb
-    ] ++ [
-      # Modal editing (Dance with Helix keybindings)
-      vscode-dance
-      vscode-dance-helix
     ];
+    # Note: Dance and Dance-Helix extensions are commented out due to hash issues.
+    # Install them manually from the VS Code marketplace for now.
 
-    userSettings = {
+    profiles.default.userSettings = {
       "telemetry.editStats.enabled" = false;
       "telemetry.feedback.enabled" = false;
       "telemetry.telemetryLevel" = "off";

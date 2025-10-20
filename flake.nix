@@ -55,6 +55,19 @@
 
     _1password-shell-plugins.url = "github:1Password/shell-plugins";
 
+    # Helix editor from master for latest features
+    helix.url = "github:helix-editor/helix";
+    # helix-gpt.url = "github:leona/helix-gpt";
+    # helix-gpt.inputs.nixpkgs.follows = "nixpkgs";
+
+    # Disko for declarative disk partitioning
+    disko.url = "github:nix-community/disko";
+    disko.inputs.nixpkgs.follows = "nixpkgs";
+
+    # Morph for multi-machine deployment
+    morph.url = "github:DBCDK/morph";
+    morph.inputs.nixpkgs.follows = "nixpkgs";
+
   };
 
   outputs =
@@ -67,6 +80,8 @@
       helix,
       ssh-keys,
       nixos-hardware,
+      disko,
+      morph,
       ...
     }@inputs:
     let
@@ -96,6 +111,7 @@
             {
               home-manager.useGlobalPkgs = false;
               home-manager.useUserPackages = true;
+              home-manager.sharedModules = [ inputs.plasma-manager.homeModules.plasma-manager ];
 
               home-manager.users.anon = import ./home/home-desktop;
               home-manager.extraSpecialArgs = { inherit inputs; };
@@ -123,6 +139,7 @@
             {
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
+              home-manager.sharedModules = [ inputs.plasma-manager.homeModules.plasma-manager ];
 
               home-manager.users.anon = import ./home/home-desktop;
               home-manager.extraSpecialArgs = { inherit inputs; };
@@ -173,6 +190,7 @@
               outputs
               ssh-keys
               nixos-hardware
+              helix
               ;
           };
 
@@ -198,12 +216,52 @@
             {
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
-              home-manager.sharedModules = [ inputs.plasma-manager.homeManagerModules.plasma-manager ];
+              home-manager.sharedModules = [ inputs.plasma-manager.homeModules.plasma-manager ];
 
               home-manager.users.anon = import ./home/home-desktop;
               home-manager.extraSpecialArgs = { inherit inputs; };
             }
           ];
+        };
+
+        # ISO installer with automatic desktop installation
+        installer = lib.nixosSystem {
+          inherit system;
+          modules = [
+            disko.nixosModules.disko
+            ./iso/installer.nix
+          ];
+          specialArgs = {
+            inherit inputs outputs;
+          };
+        };
+      };
+
+      # Packages output
+      packages.${system} = {
+        # Build the ISO with: nix build .#iso
+        iso = self.nixosConfigurations.installer.config.system.build.isoImage;
+        
+        # Morph deployment - deploy with: nix run .#deploy-homelab
+        deploy-homelab = pkgs.writeShellScriptBin "deploy-homelab" ''
+          ${morph.packages.${system}.default}/bin/morph deploy ${./morph/homelab.nix} "$@"
+        '';
+        
+        # Check deployment health
+        check-homelab = pkgs.writeShellScriptBin "check-homelab" ''
+          ${morph.packages.${system}.default}/bin/morph check-health ${./morph/homelab.nix}
+        '';
+      };
+
+      # App outputs for easy deployment
+      apps.${system} = {
+        deploy-homelab = {
+          type = "app";
+          program = "${self.packages.${system}.deploy-homelab}/bin/deploy-homelab";
+        };
+        check-homelab = {
+          type = "app";
+          program = "${self.packages.${system}.check-homelab}/bin/check-homelab";
         };
       };
     };

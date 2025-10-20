@@ -36,7 +36,7 @@
   #};
 
 
-  boot.initrd.luks.devices."luks-1298942c-b730-4809-a285-ec94bc7c7047".device = "/dev/disk/by-uuid/1298942c-b730-4809-a285-ec94bc7c7047";
+  #boot.initrd.luks.devices."luks-1298942c-b730-4809-a285-ec94bc7c7047".device = "/dev/disk/by-uuid/1298942c-b730-4809-a285-ec94bc7c7047";
   networking.hostName = "describe"; # Define your hostname.
   # Pick only one of the below networking options.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
@@ -95,6 +95,7 @@
     discord
 
     jetbrains-toolbox
+    bitwarden
   ];
 
   programs.dconf.profiles.user.databases = [
@@ -140,6 +141,8 @@
     polkitPolicyOwners = [ "anon" ];
   };
 
+  security.polkit.enable = true;
+
   home-manager.backupFileExtension = "backup-home";
 
   environment.variables = {
@@ -152,6 +155,16 @@
     # this is needed for tailscale exit node functions to work
     useRoutingFeatures = "client";
   };
+
+  # services.greetd = {
+  #   enable = true;
+  #   settings = {
+  #     default_session = {
+  #       command = "${pkgs.tuigreet}/bin/tuigreet --time --cmd sway";
+  #       user = "greeter";
+  #     };
+  #   };
+  # };
 
   # virtualisation.podman = {
   #   enable = true;
@@ -184,21 +197,30 @@
 
   services.i2p.enable = true;
 
-    # Enable networking
+
   networking.networkmanager = {
     plugins = with pkgs; [
+      networkmanager-fortisslvpn
       networkmanager-l2tp
-      networkmanager-strongswan
+      networkmanager-openvpn
     ];
   };
 
-  services.strongswan = {
-    enable = true;
-    secrets = [
-      "ipsec.d/ipsec.nm-l2tp.secrets"
-    ];
+  programs = {
+    nm-applet = {
+      enable = true;
+    };
   };
 
+  services = {
+    strongswan = {
+      enable = true;
+    };
+  };
+
+  environment.etc."strongswan.conf" = {
+    text = '''';
+  };
   programs.steam = {
     enable = true;
     remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
@@ -207,11 +229,14 @@
   };
 
   services.ollama = {
-    enable = false;
+    enable = true;
     #acceleration = "rocm";
     loadModels = [
       "qwen3-coder:latest"
       "gpt-oss:latest"
+      #"hf.co/unsloth/Qwen3-Coder-30B-A3B-Instruct-GGUF:UD-Q4_K_XL"
+      #"hf.co/unsloth/gemma-3-27b-it-GGUF:Q4_K_XL"
+      #"hf.co/unsloth/gpt-oss-120b-GGUF"
     ];
   };
 

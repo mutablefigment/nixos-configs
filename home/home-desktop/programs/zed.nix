@@ -10,6 +10,7 @@
   programs.zed-editor = {
     enable = true;
     installRemoteServer = true;
+    package = pkgs.zed-editor-fhs;
 
     extensions = [
       "nix"
@@ -27,16 +28,16 @@
         metrics = false;
         diagnostics = false;
       };
-      vim_mode = false;
-      theme = "Tokyo Night";
+      helix_mode = true;
+      theme = "Gruvbox Dark Hard";
       load_direnv = "shell_hook";
       dap = {
         CodeLLDB = {
           binary = lib.getExe' pkgs.lldb_21 "lldb-dap";
         };
-        Delve = {
-          binary = lib.getExe' pkgs.delve "dlv-dap";
-        };
+        # Delve = {
+          # binary = lib.getExe' pkgs.delve "dlv-dap";
+        # };
       };
     };
   };

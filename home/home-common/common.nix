@@ -29,5 +29,8 @@
     mosh
     devenv
     alacritty
+
+    # Required for zsh-nix-shell plugin
+    bash
   ];
 }

@@ -1,16 +1,9 @@
 {
   pkgs,
+  config,
   ...
 }:
 {
-  systemd.services."background-tmux" = {
-    description = "Start tmux in background";
-    serviceConfig = {
-      Type = "simple";
-      User = "anon";
-      ExecStart = "${pkgs.tmux}/bin/tmux -S /tmp/tmux.sock";
-      RestartSec = 5;
-      Restart = "always";
-    };
-  };
+  # Note: Moved tmux-persistent service to home-manager configuration
+  # See home/home-common/tmux.nix for the user service definition
 }

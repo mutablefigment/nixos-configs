@@ -1,5 +1,6 @@
 {
   pkgs,
+  config,
   ...
 }: {
   programs.tmux = {
@@ -9,14 +10,18 @@
 
     plugins = with pkgs; [
       tmuxPlugins.better-mouse-mode
-      tmuxPlugins.tokyo-night-tmux
+      tmuxPlugins.gruvbox
+      tmuxPlugins.resurrect
+      tmuxPlugins.continuum
     ];
     
     extraConfig = ''
       unbind C-b
       set -g prefix C-Space
       set -g mouse on
-      set -g @plugin "janoamaral/tokyo-night-tmux"
+
+      # Gruvbox Dark Hard theme
+      set -g @gruvbox-theme 'dark-hard'
 
       unbind v
       unbind h
@@ -45,6 +50,37 @@
 
       bind -n M-j previous-window
       bind -n M-k next-window
+
+      # tmux-resurrect settings
+      set -g @resurrect-strategy-nvim 'session'
+      set -g @resurrect-capture-pane-contents 'on'
+
+      # tmux-continuum settings
+      set -g @continuum-restore 'on'
+      set -g @continuum-save-interval '15'
     '';
+  };
+
+  # Persistent tmux session via systemd user service
+  systemd.user.services.tmux-persistent = {
+    Unit = {
+      Description = "Persistent tmux session with home-manager config";
+      After = [ "graphical-session-pre.target" ];
+    };
+
+    Service = {
+      Type = "forking";
+      # Use the home-manager configured tmux
+      ExecStart = "${config.programs.tmux.package}/bin/tmux new-session -d -s main";
+      ExecStop = "${config.programs.tmux.package}/bin/tmux kill-session -t main";
+      Restart = "on-failure";
+      RestartSec = 5;
+      # Ensure tmux can find the configuration
+      Environment = "PATH=${config.home.profileDirectory}/bin:${pkgs.zsh}/bin:/run/current-system/sw/bin";
+    };
+
+    Install = {
+      WantedBy = [ "default.target" ];
+    };
   };
 }
