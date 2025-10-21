@@ -9,6 +9,15 @@
   # ISO configuration
   isoImage.makeEfiBootable = true;
   isoImage.makeUsbBootable = true;
+
+  # Enable dm-verity for ISO root filesystem integrity checking
+  isoImage.squashfsCompression = "zstd -Xcompression-level 6";
+
+  # Add dm-verity support to initrd
+  boot.initrd.kernelModules = [ "dm-verity" "dm-mod" ];
+
+  # Enable verity for the squashfs image
+  boot.initrd.availableKernelModules = [ "dm-verity" ];
   
   # Auto-login as nixos user for convenience
   services.getty.autologinUser = lib.mkForce "nixos";
@@ -26,6 +35,7 @@
     parted
     gptfdisk
     zfs
+    cryptsetup  # Includes veritysetup for dm-verity management
   ];
 
   # Enable flakes in the live environment
@@ -33,6 +43,76 @@
 
   # Embed the installation script
   environment.etc."installer/disko-config.nix".source = ./disko-config.nix;
+
+  # dm-verity helper script for setting up verified partitions
+  environment.etc."installer/setup-verity.sh" = {
+    mode = "0755";
+    text = ''
+      #!/usr/bin/env bash
+      # Helper script to set up dm-verity on a partition
+      # Usage: setup-verity.sh <data-device> <hash-device> [name]
+
+      set -euo pipefail
+
+      if [ "$#" -lt 2 ]; then
+        echo "Usage: $0 <data-device> <hash-device> [name]"
+        echo ""
+        echo "Example: $0 /dev/sda2 /dev/sda3 verified-root"
+        echo ""
+        echo "This will:"
+        echo "  1. Format the hash device with dm-verity hash tree"
+        echo "  2. Display the root hash for verification"
+        echo "  3. Set up the dm-verity device mapping"
+        exit 1
+      fi
+
+      DATA_DEV="$1"
+      HASH_DEV="$2"
+      NAME="''${3:-verity}"
+
+      if [ ! -b "$DATA_DEV" ]; then
+        echo "Error: $DATA_DEV is not a valid block device"
+        exit 1
+      fi
+
+      if [ ! -b "$HASH_DEV" ]; then
+        echo "Error: $HASH_DEV is not a valid block device"
+        exit 1
+      fi
+
+      echo "Setting up dm-verity for $DATA_DEV"
+      echo "Hash device: $HASH_DEV"
+      echo "Mapping name: $NAME"
+      echo ""
+
+      # Format the hash device
+      echo "Creating hash tree..."
+      HASH_OUTPUT=$(veritysetup format "$DATA_DEV" "$HASH_DEV")
+
+      echo ""
+      echo "$HASH_OUTPUT"
+      echo ""
+
+      # Extract root hash from output
+      ROOT_HASH=$(echo "$HASH_OUTPUT" | grep "Root hash:" | awk '{print $3}')
+
+      if [ -z "$ROOT_HASH" ]; then
+        echo "Error: Failed to extract root hash"
+        exit 1
+      fi
+
+      echo "Root hash: $ROOT_HASH"
+      echo ""
+      echo "To activate the dm-verity device, run:"
+      echo "  veritysetup open $DATA_DEV $NAME $HASH_DEV $ROOT_HASH"
+      echo ""
+      echo "The verified device will be available at: /dev/mapper/$NAME"
+      echo ""
+      echo "IMPORTANT: Save the root hash! You'll need it to mount this device."
+      echo "Add this to your kernel command line or initrd configuration:"
+      echo "  roothash=$ROOT_HASH"
+    '';
+  };
   
   environment.etc."installer/install.sh" = {
     mode = "0755";
@@ -164,6 +244,10 @@
       echo "  sudo /etc/installer/install.sh"
       echo ""
       echo "Or use the desktop shortcut if available."
+      echo ""
+      echo "dm-verity support is enabled!"
+      echo "For dm-verity setup, see:"
+      echo "  /etc/installer/setup-verity.sh --help"
       echo ""
     fi
   '';

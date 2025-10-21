@@ -1,5 +1,6 @@
 # Disko configuration for automatic disk partitioning
-# This creates a simple GPT layout with EFI boot and ZFS root
+# This creates a GPT layout with EFI boot, LUKS encryption, and ZFS root
+# Uses an empty password file for ISO installer (passwordless encryption)
 {
   disko.devices = {
     disk = {
@@ -22,8 +23,17 @@
             root = {
               size = "100%";
               content = {
-                type = "zfs";
-                pool = "rpool";
+                type = "luks";
+                name = "cryptroot";
+                # Empty password file for ISO installer - allows for passwordless encryption
+                passwordFile = "/tmp/empty-password";
+                settings = {
+                  allowDiscards = true;
+                };
+                content = {
+                  type = "zfs";
+                  pool = "rpool";
+                };
               };
             };
           };

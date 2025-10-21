@@ -248,8 +248,15 @@
         iso = self.nixosConfigurations.installer.config.system.build.isoImage;
       };
 
+      # Development shells
+      devShells.${system}.default = pkgs.mkShell {
+        buildInputs = [
+          colmena.packages.${system}.colmena
+        ];
+      };
+
       # Colmena deployment configuration
-      colmena = {
+      colmenaHive = colmena.lib.makeHive {
         meta = {
           nixpkgs = import nixpkgs {
             inherit system;
