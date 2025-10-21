@@ -228,6 +228,47 @@
             }
           ];
         };
+        
+        watchtower = lib.nixosSystem {
+          specialArgs = {
+            inherit
+              inputs
+              outputs
+              ssh-keys
+              nixos-hardware
+              helix
+              ;
+          };
+
+          modules = [
+            # Apply overlays to the system
+            ({ config, pkgs, ... }: {
+              nixpkgs.overlays = [
+                # (import ./overlays/anytype-overlay.nix)
+              ];
+              nixpkgs.config.allowUnfree = true;
+            })
+
+            lanzaboote.nixosModules.lanzaboote
+            ./hosts/watchtower
+            home-manager.nixosModules.home-manager
+
+            ({ config, pkgs, ... }: {
+              environment.systemPackages = with pkgs; [
+                anytype
+              ];
+            })
+
+            {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+              home-manager.sharedModules = [ inputs.plasma-manager.homeModules.plasma-manager ];
+
+              home-manager.users.anon = import ./home/home-desktop;
+              home-manager.extraSpecialArgs = { inherit inputs; };
+            }
+          ];
+        };
 
         # ISO installer with automatic desktop installation
         installer = lib.nixosSystem {
