@@ -68,6 +68,10 @@
     morph.url = "github:DBCDK/morph";
     morph.inputs.nixpkgs.follows = "nixpkgs";
 
+    # Colmena for multi-machine deployment
+    colmena.url = "github:zhaofengli/colmena";
+    colmena.inputs.nixpkgs.follows = "nixpkgs";
+
   };
 
   outputs =
@@ -82,6 +86,7 @@
       nixos-hardware,
       disko,
       morph,
+      colmena,
       ...
     }@inputs:
     let
@@ -241,27 +246,131 @@
       packages.${system} = {
         # Build the ISO with: nix build .#iso
         iso = self.nixosConfigurations.installer.config.system.build.isoImage;
-        
-        # Morph deployment - deploy with: nix run .#deploy-homelab
-        deploy-homelab = pkgs.writeShellScriptBin "deploy-homelab" ''
-          ${morph.packages.${system}.default}/bin/morph deploy ${./morph/homelab.nix} "$@"
-        '';
-        
-        # Check deployment health
-        check-homelab = pkgs.writeShellScriptBin "check-homelab" ''
-          ${morph.packages.${system}.default}/bin/morph check-health ${./morph/homelab.nix}
-        '';
       };
 
-      # App outputs for easy deployment
-      apps.${system} = {
-        deploy-homelab = {
-          type = "app";
-          program = "${self.packages.${system}.deploy-homelab}/bin/deploy-homelab";
+      # Colmena deployment configuration
+      colmena = {
+        meta = {
+          nixpkgs = import nixpkgs {
+            inherit system;
+            config = { allowUnfree = true; };
+            overlays = [
+              (import ./overlays/anytype-overlay.nix)
+            ];
+          };
+          specialArgs = {
+            inherit
+              inputs
+              outputs
+              ssh-keys
+              nixos-hardware
+              ;
+          };
         };
-        check-homelab = {
-          type = "app";
-          program = "${self.packages.${system}.check-homelab}/bin/check-homelab";
+
+        # Desktop machines
+        gumshoe = {
+          deployment = {
+            targetHost = "gumshoe";
+            targetUser = "anon";
+            tags = [ "desktop" ];
+          };
+          imports = [
+            lanzaboote.nixosModules.lanzaboote
+            ./hosts/gumshoe
+
+            home-manager.nixosModules.home-manager
+            {
+              home-manager.useGlobalPkgs = false;
+              home-manager.useUserPackages = true;
+              home-manager.sharedModules = [ inputs.plasma-manager.homeModules.plasma-manager ];
+
+              home-manager.users.anon = import ./home/home-desktop;
+              home-manager.extraSpecialArgs = { inherit inputs; };
+            }
+          ];
+        };
+
+        traveler = {
+          deployment = {
+            targetHost = "traveler";
+            targetUser = "anon";
+            tags = [ "desktop" "laptop" ];
+          };
+          imports = [
+            nixos-hardware.nixosModules.lenovo-thinkpad-z13-gen1
+
+            lanzaboote.nixosModules.lanzaboote
+            ./hosts/traveler
+
+            home-manager.nixosModules.home-manager
+            {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+              home-manager.sharedModules = [ inputs.plasma-manager.homeModules.plasma-manager ];
+
+              home-manager.users.anon = import ./home/home-desktop;
+              home-manager.extraSpecialArgs = { inherit inputs; };
+            }
+          ];
+        };
+
+        describe = {
+          deployment = {
+            targetHost = "describe";
+            targetUser = "anon";
+            tags = [ "desktop" ];
+          };
+          imports = [
+            # Apply overlays to the system
+            ({ config, pkgs, ... }: {
+              nixpkgs.overlays = [
+                # (import ./overlays/anytype-overlay.nix)
+              ];
+              nixpkgs.config.allowUnfree = true;
+            })
+
+            lanzaboote.nixosModules.lanzaboote
+            ./hosts/describe
+            home-manager.nixosModules.home-manager
+
+            ({ config, pkgs, ... }: {
+              environment.systemPackages = with pkgs; [
+                anytype
+              ];
+            })
+
+            {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+              home-manager.sharedModules = [ inputs.plasma-manager.homeModules.plasma-manager ];
+
+              home-manager.users.anon = import ./home/home-desktop;
+              home-manager.extraSpecialArgs = { inherit inputs; };
+            }
+          ];
+        };
+
+        # Server machines
+        pve = {
+          deployment = {
+            targetHost = "pve";
+            targetUser = "anon";
+            tags = [ "server" ];
+          };
+          imports = [
+            lanzaboote.nixosModules.lanzaboote
+            ./hosts/pve
+
+            home-manager.nixosModules.home-manager
+            {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+
+              home-manager.users.anon = import ./home/home-servers;
+              home-manager.extraSpecialArgs = { inherit inputs; };
+            }
+          ];
         };
       };
     };

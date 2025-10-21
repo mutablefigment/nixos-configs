@@ -80,6 +80,16 @@
     enable = true;
     useRoutingFeatures = "both";
   };
+
+  # Automatic system updates from flake
+  system.autoUpgrade = {
+    enable = true;
+    flake = "github:mutablefigment/nixos-configs#pve";
+    dates = "daily";
+    randomizedDelaySec = "1h";
+    allowReboot = false;
+  };
+
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
   # networking.firewall.allowedUDPPorts = [ ... ];
