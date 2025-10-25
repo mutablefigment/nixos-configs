@@ -37,6 +37,7 @@
   programs.ghostty = {
     enable = true;
     enableZshIntegration = true;
+    clearDefaultKeybinds = true;
     settings = {
       theme = "Gruvbox Dark Hard";
       font-family = "IBM Plex Mono";

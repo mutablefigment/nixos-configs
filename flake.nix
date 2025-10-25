@@ -212,12 +212,6 @@
             ./hosts/describe
             home-manager.nixosModules.home-manager
 
-            ({ config, pkgs, ... }: {
-              environment.systemPackages = with pkgs; [
-                anytype
-              ];
-            })
-
             {
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
