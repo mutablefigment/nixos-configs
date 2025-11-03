@@ -60,7 +60,7 @@
      sbctl
 
      anytype
-     tor-browser-bundle-bin
+     tor-browser
      krita
      deskflow
   ];

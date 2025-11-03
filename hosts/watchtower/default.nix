@@ -72,7 +72,7 @@
     nil
 
     mullvad-browser
-    tor-browser-bundle-bin
+    tor-browser
 
     numix-solarized-gtk-theme
     solarc-gtk-theme
@@ -96,7 +96,7 @@
     discord
 
     jetbrains-toolbox
-    bitwarden
+    bitwarden-desktop
   ];
 
   programs.dconf.profiles.user.databases = [

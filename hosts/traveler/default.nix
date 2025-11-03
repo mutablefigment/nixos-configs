@@ -224,7 +224,7 @@
     sbctl
 
     anytype
-    tor-browser-bundle-bin
+    tor-browser
 
     lact
     element-desktop

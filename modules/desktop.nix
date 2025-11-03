@@ -3,7 +3,9 @@
   fonts = {
     packages = with pkgs; [
       nerd-fonts.hack
+      nerd-fonts.jetbrains-mono
       ibm-plex
+      nerd-fonts.departure-mono
     ];
   };
 

@@ -43,15 +43,16 @@
       betterthantomorrow.calva
       ionide.ionide-fsharp
       ms-dotnettools.csharp
+      gleam.gleam
 
       # Themes
-      enkia.tokyo-night
       jdinhlife.gruvbox
-      arcticicestudio.nord-visual-studio-code
 
       # Utilities
       mkhl.direnv
       vadimcn.vscode-lldb
+      visualjj.visualjj
+      usernamehw.errorlens
     ];
     # Note: Dance and Dance-Helix extensions are commented out due to hash issues.
     # Install them manually from the VS Code marketplace for now.
@@ -80,6 +81,8 @@
       "intelliphp.inlineSuggestionsEnabled" = false;
       "php.codeActions.enabled" = false;
       "editor.wordBasedSuggestions" = "off";
+      "editor.fontLigatures"= true;
+      "editor.fontFamily" = "JetBrainsMono Nerd Font Mono";
     };
   };
 }

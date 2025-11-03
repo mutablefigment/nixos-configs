@@ -71,7 +71,7 @@
     nil
 
     mullvad-browser
-    tor-browser-bundle-bin
+    tor-browser
 
     numix-solarized-gtk-theme
     solarc-gtk-theme
@@ -95,7 +95,7 @@
     discord
 
     jetbrains-toolbox
-    bitwarden
+    bitwarden-desktop
   ];
 
   programs.dconf.profiles.user.databases = [
@@ -123,6 +123,7 @@
   nixpkgs.config.allowUnfreePredicate =
     pkg:
     builtins.elem (lib.getName pkg) [
+      "onepassword-password-manager"
       "1password-gui"
       "1password"
       "steam"
@@ -196,7 +197,6 @@
 
 
   services.i2p.enable = true;
-
 
   networking.networkmanager = {
     plugins = with pkgs; [
