@@ -9,6 +9,7 @@
     ./tmux.nix
     ./zellij.nix
     ./helix.nix
+    ./atui.nix
     #./kitty.nix
   ];
 
@@ -19,9 +20,9 @@
       return {
         font = wezterm.font("JetBrains Mono"),
         font_size = 12.0,
-        color_scheme = "Tokyo Night",
+        color_scheme = "Gruvbox Dark (Gogh)",
         hide_tab_bar_if_only_one_tab = true,
-        -- default_prog = { "zsh", "--login", "-c", "tmux attach -t dev || tmux new -s dev" },
+        -- default_prog = { "zsh", "--login", "-c", "tm" },
         keys = {
           {key="n", mods="SHIFT|CTRL", action="ToggleFullScreen"},
         }

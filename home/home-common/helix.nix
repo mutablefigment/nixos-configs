@@ -13,6 +13,8 @@
       theme = "gruvbox";
 
       editor = {
+        true-color = true;
+        color-modes = true;
         lsp.display-messages = true;
       };
     };
