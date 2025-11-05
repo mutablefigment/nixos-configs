@@ -10,6 +10,7 @@
     ./zellij.nix
     ./helix.nix
     ./atui.nix
+    ./zoxide.nix
     #./kitty.nix
   ];
 
