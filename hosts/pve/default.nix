@@ -42,10 +42,19 @@
   # Use latest kernel.
   boot.kernelPackages = pkgs.linuxPackages_latest;
 
+  # BinFmt for running arm images
+  boot.binfmt.emulatedSystems = [
+    "armv6l-linux"
+    "armv7l-linux"
+  ];
+
+  
   virtualisation.docker = {
     enable = true;
   };
 
+
+ 
   networking.hostName = "pve"; # Define your hostname.
 
   # Enable networking

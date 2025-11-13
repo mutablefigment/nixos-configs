@@ -37,7 +37,7 @@
     enable = true;
     enableZshIntegration = true;
     settings = {
-      theme = "tokyonight";
+      theme = "nord";
       font-family = "IBM Plex Mono";
     };
   };
@@ -49,7 +49,7 @@
 
   programs.helix = {
     enable = true;
-    settings.theme = "tokyonight";
+    settings.theme = "nord";
   };
 
 }

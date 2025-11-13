@@ -30,19 +30,19 @@
   # This setting is usually set to true in configuration.nix
   # generated at installation time. So we force it to false
   # for now.
-  boot.loader.systemd-boot.enable = lib.mkForce false;
+  boot.loader.systemd-boot.enable = true;
 
   boot.lanzaboote = {
-    enable = true;
+    enable = false;
     pkiBundle = "/var/lib/sbctl";
   };
 
-  boot.initrd = {
-    luks.devices."crypt-root" = {
-      device = "/dev/disk/by-uuid/044db8a5-9b65-4350-8751-46b9e7b43b7f";
-      crypttabExtraOpts = [ "fido2-device=auto" ];
-    };
-  };
+  #boot.initrd = {
+  #  luks.devices."crypt-root" = {
+  #    device = "/dev/disk/by-uuid/044db8a5-9b65-4350-8751-46b9e7b43b7f";
+  #    crypttabExtraOpts = [ "fido2-device=auto" ];
+  #  };
+  #};
 
   boot.plymouth.enable = true;
 

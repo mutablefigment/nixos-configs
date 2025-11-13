@@ -14,28 +14,17 @@
   boot.extraModulePackages = [ ];
 
   fileSystems."/" =
-    { device = "zpool/root";
-      fsType = "zfs";
+    { device = "/dev/disk/by-uuid/b8450900-bf03-4466-9ba3-71ac3f4ec4b2";
+      fsType = "btrfs";
+      options = [ "subvol=@" ];
     };
 
-  fileSystems."/nix" =
-    { device = "zpool/nix";
-      fsType = "zfs";
-    };
+  boot.initrd.luks.devices."luks-afaf17dd-1313-4a5c-850b-42ab4a00e34a".device = "/dev/disk/by-uuid/afaf17dd-1313-4a5c-850b-42ab4a00e34a";
 
-  fileSystems."/var" =
-    { device = "zpool/var";
-      fsType = "zfs";
-    };
-
-  fileSystems."/home" =
-    { device = "zpool/home";
-      fsType = "zfs";
-    };
-
-  fileSystems."/boot" = 
-    { device = "/dev/disk/by-uuid/12CE-A600";
+  fileSystems."/boot" =
+    { device = "/dev/disk/by-uuid/C8A5-6BC3";
       fsType = "vfat";
+      options = [ "fmask=0077" "dmask=0077" ];
     };
 
   swapDevices = [ ];
@@ -46,7 +35,6 @@
   # with explicit per-interface declarations with `networking.interfaces.<interface>.useDHCP`.
   networking.useDHCP = lib.mkDefault true;
   # networking.interfaces.eth0.useDHCP = lib.mkDefault true;
-  # networking.interfaces.eth1.useDHCP = lib.mkDefault true;
   # networking.interfaces.wlp1s0.useDHCP = lib.mkDefault true;
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";

@@ -9,14 +9,15 @@
 
     plugins = with pkgs; [
       tmuxPlugins.better-mouse-mode
-      tmuxPlugins.tokyo-night-tmux
+      tmuxPlugins.nord
     ];
     
     extraConfig = ''
       unbind C-b
+      unbind Esc
       set -g prefix C-Space
       set -g mouse on
-      set -g @plugin "janoamaral/tokyo-night-tmux"
+      set -g @plugin "arcticicestudio/nord-tmux"
 
       unbind v
       unbind h

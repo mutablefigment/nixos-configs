@@ -130,6 +130,7 @@
               outputs
               ssh-keys
               nixos-hardware
+              helix
               ;
           };
 
