@@ -8,7 +8,7 @@
     enableZshIntegration = true;
 
     settings = {
-      theme = "dracula";
+      theme = "nord";
     };
   };
 }

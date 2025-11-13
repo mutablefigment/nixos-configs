@@ -13,7 +13,7 @@
   };
 
   programs.nushell = {
-    enable = false;
+    enable = true;
     environmentVariables = {
       SSH_AUTH_SOCK = "/home/anon/.1password/agent.sock";
     };
@@ -36,8 +36,17 @@
   programs.fish.enable = true;
   programs.zsh = {
     enable = true;
+    autosuggestion.enable = true;
     enableCompletion = true;
     oh-my-zsh.enable = true;
+
+    shellAliases = {
+      # Tmux session management
+      "tm" = "tmux attach -t main || tmux new-session -s main";
+      "tma" = "tmux attach -t main";
+      "tmd" = "tmux detach";
+      "tml" = "tmux list-sessions";
+    };
 
     plugins = [
       {
@@ -48,16 +57,6 @@
           repo = "zsh-nix-shell";
           rev = "v0.8.0";
           sha256 = "1lzrn0n4fxfcgg65v0qhnj7wnybybqzs4adz7xsrkgmcsr0ii8b7";
-        };
-      }
-      {
-        # will source zsh-autosuggestions.plugin.zsh
-        name = "zsh-autosuggestions";
-        src = pkgs.fetchFromGitHub {
-          owner = "zsh-users";
-          repo = "zsh-autosuggestions";
-          rev = "v0.4.0";
-          sha256 = "0z6i9wjjklb4lvr7zjhbphibsyx51psv50gm07mbb0kj9058j6kc";
         };
       }
     ];

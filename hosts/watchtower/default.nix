@@ -14,10 +14,11 @@
     ../../modules/system.nix
     ../../modules/desktop.nix
     ../../modules/firejail.nix
+    ../../modules/tmux.nix
   ];
 
   boot.tmp.cleanOnBoot = true;
-  boot.loader.systemd-boot.enable = true; # lib.mkForce false;
+  boot.loader.systemd-boot.enable = true; #lib.mkForce false;
 
   boot.lanzaboote = {
     enable = false;
@@ -34,13 +35,14 @@
   #  };
   #};
 
-  boot.initrd.luks.devices."luks-5bb6fe24-6aeb-4233-af1a-6edb1880b9f5".device = "/dev/disk/by-uuid/5bb6fe24-6aeb-4233-af1a-6edb1880b9f5";
+
+   # boot.initrd.luks.devices."luks-5bb6fe24-6aeb-4233-af1a-6edb1880b9f5".device = "/dev/disk/by-uuid/5bb6fe24-6aeb-4233-af1a-6edb1880b9f5";
   #boot.initrd.luks.devices."luks-1298942c-b730-4809-a285-ec94bc7c7047".device = "/dev/disk/by-uuid/1298942c-b730-4809-a285-ec94bc7c7047";
-  networking.hostName = "describe"; # Define your hostname.
+  networking.hostName = "watchtower"; # Define your hostname.
   # Pick only one of the below networking options.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
   networking.networkmanager.enable = true; # Easiest to use and most distros use this by default.
-  networking.hostId = "5c00c7a2";
+  networking.hostId = "5cddc8a2";
 
   # Set your time zone.
   time.timeZone = "Europe/Berlin";
@@ -98,8 +100,8 @@
   ];
 
   programs.dconf.profiles.user.databases = [
-    {
-      settings = {
+    { 
+      settings = { 
         "org/gnome/mutter" = {
           experimental-features = [
             "scale-monitor-framebuffer"
@@ -117,11 +119,11 @@
     ];
   };
 
+
   # Enable the unfree 1Password packages
   nixpkgs.config.allowUnfreePredicate =
     pkg:
     builtins.elem (lib.getName pkg) [
-      "onepassword-password-manager"
       "1password-gui"
       "1password"
       "steam"
@@ -193,7 +195,9 @@
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
 
+
   services.i2p.enable = true;
+
 
   networking.networkmanager = {
     plugins = with pkgs; [

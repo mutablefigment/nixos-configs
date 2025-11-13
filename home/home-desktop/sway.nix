@@ -10,14 +10,14 @@
 
         config = rec {
             modifier = "Mod4";
-            terminal = "alacritty";
+            terminal = "ghostty";
             startup = [
                 {command = "firefox";}
             ];
 
-             output."*".scale = "1.5";
+            output."*".scale = "1.75";
         };
-
-       
     };
+
+    programs.waybar.enable = true;
 }
