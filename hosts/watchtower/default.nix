@@ -14,7 +14,7 @@
     ../../modules/system.nix
     ../../modules/desktop.nix
     ../../modules/firejail.nix
-    ../../modules/tmux.nix
+    #../../modules/tmux.nix
   ];
 
   boot.tmp.cleanOnBoot = true;
