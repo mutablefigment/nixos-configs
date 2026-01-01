@@ -16,7 +16,6 @@
     ../../modules/system.nix
     ../../modules/desktop.nix
     ../../modules/firejail.nix
-    ../../modules/tmux.nix
     ./hardware-configuration.nix
 
     # ./docker-compose.nix
@@ -205,7 +204,7 @@
     curl
     mullvad-browser
     signal-desktop
-    chromium
+    ungoogled-chromium
     colmena
     yt-dlp
     mpv

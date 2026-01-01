@@ -163,10 +163,10 @@
 
         };
 
-        pve = lib.nixosSystem {
+        mountain = lib.nixosSystem {
           modules = [
             lanzaboote.nixosModules.lanzaboote
-            ./hosts/pve
+            ./hosts/mountain
 
             home-manager.nixosModules.home-manager
             {

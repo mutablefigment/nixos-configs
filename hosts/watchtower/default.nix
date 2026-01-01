@@ -97,6 +97,7 @@
 
     jetbrains-toolbox
     bitwarden-desktop
+    libreoffice
   ];
 
   programs.dconf.profiles.user.databases = [
