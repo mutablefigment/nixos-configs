@@ -10,8 +10,7 @@
       ./hardware-configuration.nix
       ../../modules/system.nix
       
-      ../../modules/firejail.nix
-      ../../modules/tmux.nix
+#      ../../modules/firejail.nix
     ];
 
   # Bootloader.
@@ -23,11 +22,11 @@
   boot.initrd = {
     availableKernelModules = [ "e1000e" "igb" ];
     network = {
-      enable = true;
+      enable = false; # turn it back to true
       udhcpc.enable = true;
       flushBeforeStage2 = true;
       ssh = {
-        enable = true;
+        enable = false; # turn it back to true
         port = 22;
         authorizedKeys = [ "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIOU+iWnGXqMpNj5wZOXN7/IpEz7Cavarzs2rM7RS/aq" ];
         hostKeys = [ "/etc/secrets/initrd/ssh_host_ed25519_key" ];
@@ -55,7 +54,7 @@
 
 
  
-  networking.hostName = "pve"; # Define your hostname.
+  networking.hostName = "mountain"; # Define your hostname.
 
   # Enable networking
   networking.networkmanager.enable = true;
@@ -93,7 +92,7 @@
   # Automatic system updates from flake
   system.autoUpgrade = {
     enable = true;
-    flake = "github:mutablefigment/nixos-configs#pve";
+    flake = "github:mutablefigment/nixos-configs#mountain";
     dates = "daily";
     randomizedDelaySec = "1h";
     allowReboot = false;

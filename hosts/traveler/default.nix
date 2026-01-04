@@ -64,6 +64,17 @@
     unitConfig.DefaultDependencies = false;
   };
 
+
+  services.greetd = {
+    enable = true;
+    settings = {
+      default_session = {
+        command = "${pkgs.tuigreet}/bin/tuigreet --time --cmd niri-session";
+        user = "greeter";
+      };
+    };
+  };
+
   systemd.services."getty@tty1".enable = false;
   systemd.services."sddm".wants = [ "graphical.target" ];
 
@@ -192,6 +203,7 @@
 
   # Install firefox.
   programs.firefox.enable = true;
+  programs.nm-applet.enable = true;
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
@@ -244,6 +256,7 @@
 
     nil
     nixd
+    xwayland-satellite
   ];
 
   # Arion works with Docker, but for NixOS-based containers, you need Podman
@@ -298,6 +311,12 @@
   # we need this option for tailscale exit node connection to work
   networking.firewall.checkReversePath = "loose";
   networking.firewall.enable = true;
+
+  programs.niri.enable = true;
+  security.polkit.enable = true; # polkit
+  services.gnome.gnome-keyring.enable = true; # secret service
+  security.pam.services.swaylock = {};
+  environment.sessionVariables.NIXOS_OZONE_WL = "1";
 
   system.stateVersion = "25.05";
 }

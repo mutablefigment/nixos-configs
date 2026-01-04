@@ -72,6 +72,10 @@
     colmena.url = "github:zhaofengli/colmena";
     colmena.inputs.nixpkgs.follows = "nixpkgs";
 
+    proxmox-nixos.url = "github:SaumonNet/proxmox-nixos";
+    impermanence.url = "github:nix-community/impermanence";
+
+    zen-browser.url = "github:youwen5/zen-browser-flake";
   };
 
   outputs =
@@ -87,6 +91,9 @@
       disko,
       morph,
       colmena,
+      proxmox-nixos,
+      impermanence,
+      zen-browser,
       ...
     }@inputs:
     let
@@ -165,7 +172,20 @@
 
         mountain = lib.nixosSystem {
           modules = [
-            lanzaboote.nixosModules.lanzaboote
+           # lanzaboote.nixosModules.lanzaboote
+
+            proxmox-nixos.nixosModules.proxmox-ve
+            ({ pkgs, lib, ... }: {
+              services.proxmox-ve = {
+                enable = true;
+                ipAddress = "192.168.176.156";
+              };
+
+              nixpkgs.overlays = [
+                proxmox-nixos.overlays.${system}
+              ];
+            })
+
             ./hosts/mountain
 
             home-manager.nixosModules.home-manager
@@ -188,6 +208,35 @@
           };
 
         };
+
+        htz = lib.nixosSystem {
+          modules = [
+           # lanzaboote.nixosModules.lanzaboote
+            disko.nixosModules.disko
+            impermanence.nixosModules.impermanence
+            ./hosts/htz
+
+            home-manager.nixosModules.home-manager
+            {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+
+              home-manager.users.anon = import ./home/home-servers;
+              home-manager.extraSpecialArgs = { inherit inputs; };
+            }
+          ];
+
+          specialArgs = {
+            inherit
+              inputs
+              outputs
+              ssh-keys
+              nixos-hardware
+              ;
+          };
+
+        };
+
 
         describe = lib.nixosSystem {
           specialArgs = {
