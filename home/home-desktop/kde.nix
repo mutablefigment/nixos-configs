@@ -10,7 +10,8 @@
     # Workspace settings
     workspace = {
       # Look and Feel theme (Haiku Desktop)
-      lookAndFeel = "org.magpie.besot.haiku.desktop";
+      # lookAndFeel = "org.magpie.besot.haiku.desktop";
+      lookAndFeel = "com.github.vinceliuice.McMojave";
 
       # Color scheme hash (from kdeglobals)
       colorScheme = "ca98508595b9a12b935ada7617197818f6e7caca";
@@ -47,7 +48,7 @@
       "kdeglobals"."General"."ColorSchemeHash" = "ca98508595b9a12b935ada7617197818f6e7caca";
 
       # Look and Feel package
-      "kdeglobals"."KDE"."LookAndFeelPackage" = "org.magpie.besot.haiku.desktop";
+      "kdeglobals"."KDE"."LookAndFeelPackage" = "com.github.vinceliuice.McMojave";
 
       # Window manager colors (from kdeglobals)
       "kdeglobals"."WM"."activeBackground" = "255,203,0";

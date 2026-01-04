@@ -28,13 +28,15 @@
   #boot.plymouth.enable = true;
 
   # Enable the X11 windowing system.
-  # services.xserver.enable = true;
+  services.xserver.enable = true;
   services.displayManager.sddm.enable = true;
   services.displayManager.sddm.wayland.enable = true;
   services.desktopManager.plasma6.enable = true;
   
   # services.displayManager.gdm.enable = true;
   # services.desktopManager.gnome.enable = true;
+  # # services.displayManager.gdm.enable = true;
+  # services.xserver.desktopManager.budgie.enable = true;
 
   # services.xserver.enable = true;
   # services.xserver.desktopManager.budgie.enable = true;

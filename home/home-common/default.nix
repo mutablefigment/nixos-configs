@@ -48,6 +48,24 @@
 
   programs.alacritty = {
     enable = false;
-    theme = "tokyo_night";
+    theme = "tokyo_night_enhanced";
+    settings = {
+      scrolling.history = 1000;
+  		font = {
+				normal = {
+					family = "JetBrains Mono Nerd Font";
+					style = "Regular";
+				};
+				bold = {
+					family = "JetBrains Mono Nerd Font";
+					style = "Bold";
+				};
+				italic = {
+					family = "JetBrains Mono Nerd Font";
+					style = "Italic";
+				};
+				size = 14;
+			};
+    };
   };
 }

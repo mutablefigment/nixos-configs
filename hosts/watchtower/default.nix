@@ -18,7 +18,7 @@
   ];
 
   boot.tmp.cleanOnBoot = true;
-  boot.loader.systemd-boot.enable = true; #lib.mkForce false;
+  boot.loader.systemd-boot.enable = true; # lib.mkForce false;
 
   boot.lanzaboote = {
     enable = false;
@@ -35,8 +35,7 @@
   #  };
   #};
 
-
-   # boot.initrd.luks.devices."luks-5bb6fe24-6aeb-4233-af1a-6edb1880b9f5".device = "/dev/disk/by-uuid/5bb6fe24-6aeb-4233-af1a-6edb1880b9f5";
+  # boot.initrd.luks.devices."luks-5bb6fe24-6aeb-4233-af1a-6edb1880b9f5".device = "/dev/disk/by-uuid/5bb6fe24-6aeb-4233-af1a-6edb1880b9f5";
   #boot.initrd.luks.devices."luks-1298942c-b730-4809-a285-ec94bc7c7047".device = "/dev/disk/by-uuid/1298942c-b730-4809-a285-ec94bc7c7047";
   networking.hostName = "watchtower"; # Define your hostname.
   # Pick only one of the below networking options.
@@ -94,14 +93,15 @@
     go
     keymapp
     discord
+    wasistlos
 
     jetbrains-toolbox
     bitwarden-desktop
   ];
 
   programs.dconf.profiles.user.databases = [
-    { 
-      settings = { 
+    {
+      settings = {
         "org/gnome/mutter" = {
           experimental-features = [
             "scale-monitor-framebuffer"
@@ -118,7 +118,6 @@
       pkgs.zsa-udev-rules
     ];
   };
-
 
   # Enable the unfree 1Password packages
   nixpkgs.config.allowUnfreePredicate =
@@ -194,10 +193,15 @@
 
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
-
+  services.openssh.settings = {
+    PasswordAuthentication = false;
+  };
+  programs.mosh = {
+    enable = true;
+    withUtempter = true;
+  };
 
   services.i2p.enable = true;
-
 
   networking.networkmanager = {
     plugins = with pkgs; [
@@ -240,6 +244,13 @@
       #"hf.co/unsloth/gpt-oss-120b-GGUF"
     ];
   };
+
+  # services.gnome.gnome-keyring.enable = true;
+  # programs.sway = {
+  #   enable = true;
+  #   wrapperFeatures.gtk = true;
+  #   package = pkgs.swayfx;
+  # };
 
   system.stateVersion = "25.05";
 }

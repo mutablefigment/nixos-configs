@@ -10,7 +10,7 @@
     package = inputs.helix.packages.${pkgs.system}.default;
 
     settings = {
-      theme = "gruvbox";
+      theme = "tokyonight";
 
       editor = {
         true-color = true;

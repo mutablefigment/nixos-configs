@@ -11,6 +11,7 @@
     plugins = with pkgs; [
       tmuxPlugins.better-mouse-mode
       tmuxPlugins.gruvbox
+      tmuxPlugins.tokyo-night-tmux
       tmuxPlugins.resurrect
       tmuxPlugins.continuum
     ];
@@ -22,7 +23,11 @@
       set -g mouse on
 
       # Gruvbox Dark Hard theme
-      set -g @gruvbox-theme 'dark-hard'
+      #set -g @gruvbox-theme 'dark-hard'
+
+      # Tokyonight 
+      set -g @plugin "janoamaral/tokyo-night-tmux"
+      set -g @tokyo-night-tmux_theme night
 
       unbind v
       unbind h

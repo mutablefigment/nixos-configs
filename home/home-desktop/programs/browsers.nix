@@ -9,6 +9,29 @@
   programs = {
     chromium = {
       enable = true;
+      package = pkgs.ungoogled-chromium;
+      extensions = [
+        {
+          # Ublock origin lite
+          id = "ddkjiahejlhfcafbddmgiahcphecmpfh";
+        }
+        {
+          # 1password
+          id = "aeblfdkhhhdcdjpifhhbdiojplfjncoa";
+        }
+        {
+          # Kagisearch
+          id = "cdglnehniifkbagbbombnjghhcihifij";
+        }
+        {
+          # Darkreader
+          id = "eimadpbcbfnmbkopoojfekhnkhdbieeh";
+        }
+        {
+          # Sponsorblock
+          id = "mnjggcdmjocbbbhaepdhchncahnbgone";
+        }
+      ];
     };
 
     firefox = {

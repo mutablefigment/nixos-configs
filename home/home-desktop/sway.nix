@@ -7,15 +7,16 @@
     wayland.windowManager.sway = {
         enable = false;
         wrapperFeatures.gtk = true;
+        # package = pkgs.swayfx;
 
         config = rec {
             modifier = "Mod4";
-            terminal = "ghostty";
+            terminal = "alacritty";
             startup = [
                 {command = "firefox";}
             ];
 
-            output."*".scale = "1.75";
+            # output."*".scale = "1.25";
         };
     };
 
