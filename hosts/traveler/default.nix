@@ -16,7 +16,6 @@
     ../../modules/system.nix
     ../../modules/desktop.nix
     ../../modules/firejail.nix
-    ../../modules/tmux.nix
     ./hardware-configuration.nix
 
     # ./docker-compose.nix
@@ -30,19 +29,19 @@
   # This setting is usually set to true in configuration.nix
   # generated at installation time. So we force it to false
   # for now.
-  boot.loader.systemd-boot.enable = lib.mkForce false;
+  boot.loader.systemd-boot.enable = true;
 
   boot.lanzaboote = {
-    enable = true;
+    enable = false;
     pkiBundle = "/var/lib/sbctl";
   };
 
-  boot.initrd = {
-    luks.devices."crypt-root" = {
-      device = "/dev/disk/by-uuid/044db8a5-9b65-4350-8751-46b9e7b43b7f";
-      crypttabExtraOpts = [ "fido2-device=auto" ];
-    };
-  };
+  #boot.initrd = {
+  #  luks.devices."crypt-root" = {
+  #    device = "/dev/disk/by-uuid/044db8a5-9b65-4350-8751-46b9e7b43b7f";
+  #    crypttabExtraOpts = [ "fido2-device=auto" ];
+  #  };
+  #};
 
   boot.plymouth.enable = true;
 
@@ -63,6 +62,17 @@
   systemd.services.plasma-waitforname = {
     serviceConfig.TimeoutStartSec = "10s";
     unitConfig.DefaultDependencies = false;
+  };
+
+
+  services.greetd = {
+    enable = true;
+    settings = {
+      default_session = {
+        command = "${pkgs.tuigreet}/bin/tuigreet --time --cmd niri-session";
+        user = "greeter";
+      };
+    };
   };
 
   systemd.services."getty@tty1".enable = false;
@@ -193,6 +203,7 @@
 
   # Install firefox.
   programs.firefox.enable = true;
+  programs.nm-applet.enable = true;
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
@@ -205,7 +216,7 @@
     curl
     mullvad-browser
     signal-desktop
-    chromium
+    ungoogled-chromium
     colmena
     yt-dlp
     mpv
@@ -245,6 +256,7 @@
 
     nil
     nixd
+    xwayland-satellite
   ];
 
   # Arion works with Docker, but for NixOS-based containers, you need Podman
@@ -299,6 +311,12 @@
   # we need this option for tailscale exit node connection to work
   networking.firewall.checkReversePath = "loose";
   networking.firewall.enable = true;
+
+  programs.niri.enable = true;
+  security.polkit.enable = true; # polkit
+  services.gnome.gnome-keyring.enable = true; # secret service
+  security.pam.services.swaylock = {};
+  environment.sessionVariables.NIXOS_OZONE_WL = "1";
 
   system.stateVersion = "25.05";
 }

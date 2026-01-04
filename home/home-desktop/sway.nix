@@ -4,21 +4,15 @@
   ...
 }:
 {
-    wayland.windowManager.sway = {
-        enable = false;
-        wrapperFeatures.gtk = true;
-        # package = pkgs.swayfx;
+    programs.fuzzel.enable = true; # Super+D in the default setting (app launcher)
+    programs.swaylock.enable = true; # Super+Alt+L in the default setting (screen locker)
+    programs.waybar.enable = true; # launch on startup in the default setting (bar)
+    services.mako.enable = true; # notification daemon
+    services.swayidle.enable = true; # idle management daemon
+    services.polkit-gnome.enable = true; # polkit
+    home.packages = with pkgs; [
+      swaybg # wallpaper
+    ];
 
-        config = rec {
-            modifier = "Mod4";
-            terminal = "alacritty";
-            startup = [
-                {command = "firefox";}
-            ];
-
-            # output."*".scale = "1.25";
-        };
-    };
-
-    programs.waybar.enable = true;
+    # programs.waybar.enable = true;
 }
