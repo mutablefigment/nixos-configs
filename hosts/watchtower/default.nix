@@ -86,7 +86,7 @@
     docker-compose
 
     spotify
-    anytype
+    # anytype
 
     bazel
     zig
@@ -157,15 +157,15 @@
     useRoutingFeatures = "client";
   };
 
-  # services.greetd = {
-  #   enable = true;
-  #   settings = {
-  #     default_session = {
-  #       command = "${pkgs.tuigreet}/bin/tuigreet --time --cmd sway";
-  #       user = "greeter";
-  #     };
-  #   };
-  # };
+  services.greetd = {
+    enable = true;
+    settings = {
+      default_session = {
+        command = "${pkgs.tuigreet}/bin/tuigreet --time --cmd niri-session";
+        user = "greeter";
+      };
+    };
+  };
 
   # virtualisation.podman = {
   #   enable = true;

@@ -8,7 +8,7 @@
     ./programs
     ../home-common
 
-    ./sway.nix
+    ./niri.nix
     ./kde.nix
   ];
 
@@ -30,7 +30,7 @@
 
     obsidian
     claude-code
-   ];
+  ];
 
   programs.home-manager.enable = true;
   services.lorri.enable = true;

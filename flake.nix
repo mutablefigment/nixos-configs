@@ -76,6 +76,11 @@
     impermanence.url = "github:nix-community/impermanence";
 
     zen-browser.url = "github:youwen5/zen-browser-flake";
+    noctalia = {
+      url = "github:noctalia-dev/noctalia-shell";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    niri.url = "github:sodiboo/niri-flake";
   };
 
   outputs =
@@ -94,15 +99,19 @@
       proxmox-nixos,
       impermanence,
       zen-browser,
+      noctalia,
+      niri,
       ...
     }@inputs:
     let
       inherit (self) outputs;
-      lib = nixpkgs.lib // home-manager.lib;        
+      lib = nixpkgs.lib // home-manager.lib;
       system = "x86_64-linux";
       pkgs = import nixpkgs {
         inherit system;
-        config = { allowUnfree = true; };
+        config = {
+          allowUnfree = true;
+        };
         overlays = [
           (import ./overlays/anytype-overlay.nix)
         ];
@@ -172,19 +181,22 @@
 
         mountain = lib.nixosSystem {
           modules = [
-           # lanzaboote.nixosModules.lanzaboote
+            # lanzaboote.nixosModules.lanzaboote
 
             proxmox-nixos.nixosModules.proxmox-ve
-            ({ pkgs, lib, ... }: {
-              services.proxmox-ve = {
-                enable = true;
-                ipAddress = "192.168.176.156";
-              };
+            (
+              { pkgs, lib, ... }:
+              {
+                services.proxmox-ve = {
+                  enable = true;
+                  ipAddress = "192.168.176.156";
+                };
 
-              nixpkgs.overlays = [
-                proxmox-nixos.overlays.${system}
-              ];
-            })
+                nixpkgs.overlays = [
+                  proxmox-nixos.overlays.${system}
+                ];
+              }
+            )
 
             ./hosts/mountain
 
@@ -211,7 +223,7 @@
 
         htz = lib.nixosSystem {
           modules = [
-           # lanzaboote.nixosModules.lanzaboote
+            # lanzaboote.nixosModules.lanzaboote
             disko.nixosModules.disko
             impermanence.nixosModules.impermanence
             ./hosts/htz
@@ -237,7 +249,6 @@
 
         };
 
-
         describe = lib.nixosSystem {
           specialArgs = {
             inherit
@@ -251,12 +262,15 @@
 
           modules = [
             # Apply overlays to the system
-            ({ config, pkgs, ... }: {
-              nixpkgs.overlays = [
-                # (import ./overlays/anytype-overlay.nix)
-              ];
-              nixpkgs.config.allowUnfree = true;
-            })
+            (
+              { config, pkgs, ... }:
+              {
+                nixpkgs.overlays = [
+                  # (import ./overlays/anytype-overlay.nix)
+                ];
+                nixpkgs.config.allowUnfree = true;
+              }
+            )
 
             lanzaboote.nixosModules.lanzaboote
             ./hosts/describe
@@ -272,7 +286,7 @@
             }
           ];
         };
-        
+
         watchtower = lib.nixosSystem {
           specialArgs = {
             inherit
@@ -281,32 +295,34 @@
               ssh-keys
               nixos-hardware
               helix
+              niri
+              noctalia
               ;
           };
 
           modules = [
             # Apply overlays to the system
-            ({ config, pkgs, ... }: {
-              nixpkgs.overlays = [
-                # (import ./overlays/anytype-overlay.nix)
-              ];
-              nixpkgs.config.allowUnfree = true;
-            })
+            (
+              { config, pkgs, ... }:
+              {
+                nixpkgs.overlays = [
+                  # (import ./overlays/anytype-overlay.nix)
+                ];
+                nixpkgs.config.allowUnfree = true;
+              }
+            )
 
             lanzaboote.nixosModules.lanzaboote
+            #niri.nixosModules.niri
             ./hosts/watchtower
             home-manager.nixosModules.home-manager
-
-            ({ config, pkgs, ... }: {
-              environment.systemPackages = with pkgs; [
-                anytype
-              ];
-            })
 
             {
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
-              home-manager.sharedModules = [ inputs.plasma-manager.homeModules.plasma-manager ];
+              home-manager.sharedModules = [
+                inputs.plasma-manager.homeModules.plasma-manager
+              ];
 
               home-manager.users.anon = import ./home/home-desktop;
               home-manager.extraSpecialArgs = { inherit inputs; };
@@ -345,7 +361,9 @@
         meta = {
           nixpkgs = import nixpkgs {
             inherit system;
-            config = { allowUnfree = true; };
+            config = {
+              allowUnfree = true;
+            };
             overlays = [
               (import ./overlays/anytype-overlay.nix)
             ];
@@ -387,7 +405,10 @@
           deployment = {
             targetHost = "traveler";
             targetUser = "anon";
-            tags = [ "desktop" "laptop" ];
+            tags = [
+              "desktop"
+              "laptop"
+            ];
           };
           imports = [
             nixos-hardware.nixosModules.lenovo-thinkpad-z13-gen1
@@ -415,22 +436,28 @@
           };
           imports = [
             # Apply overlays to the system
-            ({ config, pkgs, ... }: {
-              nixpkgs.overlays = [
-                # (import ./overlays/anytype-overlay.nix)
-              ];
-              nixpkgs.config.allowUnfree = true;
-            })
+            (
+              { config, pkgs, ... }:
+              {
+                nixpkgs.overlays = [
+                  # (import ./overlays/anytype-overlay.nix)
+                ];
+                nixpkgs.config.allowUnfree = true;
+              }
+            )
 
             lanzaboote.nixosModules.lanzaboote
             ./hosts/describe
             home-manager.nixosModules.home-manager
 
-            ({ config, pkgs, ... }: {
-              environment.systemPackages = with pkgs; [
-                anytype
-              ];
-            })
+            (
+              { config, pkgs, ... }:
+              {
+                environment.systemPackages = with pkgs; [
+                  anytype
+                ];
+              }
+            )
 
             {
               home-manager.useGlobalPkgs = true;

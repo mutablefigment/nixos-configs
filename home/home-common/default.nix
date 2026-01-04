@@ -2,9 +2,10 @@
   config,
   pkgs,
   ...
-}: {
+}:
+{
   imports = [
-    ./common.nix
+    ./commonutils.nix
     ./shell.nix
     ./tmux.nix
     ./zellij.nix
@@ -15,19 +16,20 @@
   ];
 
   programs.wezterm = {
-   enable = true;
+    enable = true;
     enableZshIntegration = true;
-    extraConfig = ''-- Your lua code / config here
-      return {
-        font = wezterm.font("JetBrains Mono"),
-        font_size = 12.0,
-        color_scheme = "Gruvbox Dark (Gogh)",
-        hide_tab_bar_if_only_one_tab = true,
-        -- default_prog = { "zsh", "--login", "-c", "tm" },
-        keys = {
-          {key="n", mods="SHIFT|CTRL", action="ToggleFullScreen"},
-        }
-      }
+    extraConfig = ''
+      -- Your lua code / config here
+            return {
+              font = wezterm.font("JetBrains Mono"),
+              font_size = 12.0,
+              color_scheme = "Gruvbox Dark (Gogh)",
+              hide_tab_bar_if_only_one_tab = true,
+              -- default_prog = { "zsh", "--login", "-c", "tm" },
+              keys = {
+                {key="n", mods="SHIFT|CTRL", action="ToggleFullScreen"},
+              }
+            }
     '';
 
     # settings = {
@@ -51,21 +53,21 @@
     theme = "tokyo_night_enhanced";
     settings = {
       scrolling.history = 1000;
-  		font = {
-				normal = {
-					family = "JetBrains Mono Nerd Font";
-					style = "Regular";
-				};
-				bold = {
-					family = "JetBrains Mono Nerd Font";
-					style = "Bold";
-				};
-				italic = {
-					family = "JetBrains Mono Nerd Font";
-					style = "Italic";
-				};
-				size = 14;
-			};
+      font = {
+        normal = {
+          family = "JetBrains Mono Nerd Font";
+          style = "Regular";
+        };
+        bold = {
+          family = "JetBrains Mono Nerd Font";
+          style = "Bold";
+        };
+        italic = {
+          family = "JetBrains Mono Nerd Font";
+          style = "Italic";
+        };
+        size = 14;
+      };
     };
   };
 }
