@@ -252,6 +252,5 @@
   #   wrapperFeatures.gtk = true;
   #   package = pkgs.swayfx;
   # };
-
   system.stateVersion = "25.05";
 }

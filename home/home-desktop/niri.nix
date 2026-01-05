@@ -24,6 +24,8 @@
     enable = true;
     settings = {
 
+      prefer-no-csd = true;
+
       binds = with config.lib.niri.actions; {
         "Mod+T".action.spawn = "wezterm";
         "Mod+Q".action = close-window;
@@ -101,4 +103,5 @@
     enable = true;
     systemd.enable = true;
   };
+
 }
