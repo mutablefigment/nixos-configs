@@ -34,7 +34,8 @@
   #  };
   #};
 
-  boot.initrd.luks.devices."luks-5bb6fe24-6aeb-4233-af1a-6edb1880b9f5".device = "/dev/disk/by-uuid/5bb6fe24-6aeb-4233-af1a-6edb1880b9f5";
+  boot.initrd.luks.devices."luks-5bb6fe24-6aeb-4233-af1a-6edb1880b9f5".device =
+    "/dev/disk/by-uuid/5bb6fe24-6aeb-4233-af1a-6edb1880b9f5";
   #boot.initrd.luks.devices."luks-1298942c-b730-4809-a285-ec94bc7c7047".device = "/dev/disk/by-uuid/1298942c-b730-4809-a285-ec94bc7c7047";
   networking.hostName = "describe"; # Define your hostname.
   # Pick only one of the below networking options.
@@ -85,7 +86,7 @@
     docker-compose
 
     spotify
-    anytype
+    # anytype
 
     bazel
     zig

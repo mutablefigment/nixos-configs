@@ -113,7 +113,7 @@
           allowUnfree = true;
         };
         overlays = [
-          (import ./overlays/anytype-overlay.nix)
+          # (import ./overlays/anytype-overlay.nix)
         ];
       };
     in
@@ -365,7 +365,7 @@
               allowUnfree = true;
             };
             overlays = [
-              (import ./overlays/anytype-overlay.nix)
+              # (import ./overlays/anytype-overlay.nix)
             ];
           };
           specialArgs = {
@@ -454,7 +454,7 @@
               { config, pkgs, ... }:
               {
                 environment.systemPackages = with pkgs; [
-                  anytype
+                  # anytype
                 ];
               }
             )

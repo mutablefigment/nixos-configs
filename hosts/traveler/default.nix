@@ -64,7 +64,6 @@
     unitConfig.DefaultDependencies = false;
   };
 
-
   services.greetd = {
     enable = true;
     settings = {
@@ -234,7 +233,7 @@
     ghostty
     sbctl
 
-    anytype
+    # anytype
     tor-browser
 
     lact
@@ -312,10 +311,10 @@
   networking.firewall.checkReversePath = "loose";
   networking.firewall.enable = true;
 
-  programs.niri.enable = true;
-  security.polkit.enable = true; # polkit
-  services.gnome.gnome-keyring.enable = true; # secret service
-  security.pam.services.swaylock = {};
+  # programs.niri.enable = true;
+  # security.polkit.enable = true; # polkit
+  # services.gnome.gnome-keyring.enable = true; # secret service
+  # security.pam.services.swaylock = { };
   environment.sessionVariables.NIXOS_OZONE_WL = "1";
 
   system.stateVersion = "25.05";
