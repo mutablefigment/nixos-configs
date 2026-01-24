@@ -157,16 +157,6 @@
     useRoutingFeatures = "client";
   };
 
-  services.greetd = {
-    enable = true;
-    settings = {
-      default_session = {
-        command = "${pkgs.tuigreet}/bin/tuigreet --time --cmd niri-session";
-        user = "greeter";
-      };
-    };
-  };
-
   # virtualisation.podman = {
   #   enable = true;
   #   autoPrune.enable = true;
@@ -210,12 +200,6 @@
       networkmanager-l2tp
       networkmanager-openvpn
     ];
-  };
-
-  programs = {
-    nm-applet = {
-      enable = true;
-    };
   };
 
   services = {

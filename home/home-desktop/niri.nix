@@ -21,7 +21,7 @@
   ];
 
   programs.niri = {
-    enable = true;
+    enable = false;
     settings = {
 
       prefer-no-csd = true;

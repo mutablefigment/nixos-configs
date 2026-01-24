@@ -80,7 +80,6 @@
       url = "github:noctalia-dev/noctalia-shell";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    niri.url = "github:sodiboo/niri-flake";
   };
 
   outputs =
@@ -100,7 +99,6 @@
       impermanence,
       zen-browser,
       noctalia,
-      niri,
       ...
     }@inputs:
     let
@@ -295,7 +293,7 @@
               ssh-keys
               nixos-hardware
               helix
-              niri
+              
               noctalia
               ;
           };
@@ -313,7 +311,6 @@
             )
 
             lanzaboote.nixosModules.lanzaboote
-            #niri.nixosModules.niri
             ./hosts/watchtower
             home-manager.nixosModules.home-manager
 

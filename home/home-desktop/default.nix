@@ -8,8 +8,6 @@
     ./programs
     ../home-common
 
-    ./niri.nix
-    ./kde.nix
   ];
 
   home = {
