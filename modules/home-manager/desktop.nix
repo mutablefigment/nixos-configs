@@ -24,6 +24,14 @@
         simplex-chat-desktop
         obsidian
         claude-code
+
+        # Messaging apps (from old common.nix)
+        signal-desktop
+        thunderbird
+        waypipe
+        dino
+        profanity
+        toxic
       ];
     };
 }
