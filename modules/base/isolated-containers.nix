@@ -71,7 +71,6 @@
               bashInteractive
               waypipe
               mesa
-              mesa.drivers
               mesa-demos
               vulkan-tools
               pciutils

@@ -4,6 +4,10 @@
   flake.modules.nixos.base =
     { pkgs, lib, ... }:
     {
+      imports = [
+        config.flake.modules.nixos.hardened
+      ];
+
       # Time zone
       time.timeZone = "Europe/Berlin";
 
