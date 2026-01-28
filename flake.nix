@@ -55,6 +55,12 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    # Sandboxing
+    jail-nix = {
+      url = "github:MohrJonas/jail.nix";
+      # inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     # Secrets management
     agenix = {
       url = "github:ryantm/agenix";

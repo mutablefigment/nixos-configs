@@ -458,6 +458,21 @@
         "type": "github"
       }
     },
+    "jail-nix": {
+      "locked": {
+        "lastModified": 1768943323,
+        "narHash": "sha256-UhgDNhfMhIGRHrojQ4O0X/rT80W3URrbXOn4NIirzoo=",
+        "owner": "MohrJonas",
+        "repo": "jail.nix",
+        "rev": "a045ce7ba53ff7f2a158963506781aafbe5c2580",
+        "type": "github"
+      },
+      "original": {
+        "owner": "MohrJonas",
+        "repo": "jail.nix",
+        "type": "github"
+      }
+    },
     "lanzaboote": {
       "inputs": {
         "crane": "crane",
@@ -797,6 +812,7 @@
         "home-manager": "home-manager_2",
         "impermanence": "impermanence",
         "import-tree": "import-tree",
+        "jail-nix": "jail-nix",
         "lanzaboote": "lanzaboote",
         "microvm": "microvm",
         "morph": "morph",

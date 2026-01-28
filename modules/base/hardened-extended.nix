@@ -46,11 +46,19 @@
 
         # Note: kernel.kexec_load_disabled is set by security.protectKernelImage in hardened profile
 
-        # Restrict SysRq to only SAK (Secure Attention Key)
-        "kernel.sysrq" = lib.mkDefault 4;
+        # Restrict SysRq to only SAK (Secure Attention Key) - value 4
+        # Set to 0 for maximum security (disable completely)
+        "kernel.sysrq" = lib.mkDefault 0;
 
         # Restrict perf_event to CAP_PERFMON
         "kernel.perf_event_paranoid" = lib.mkDefault 3;
+
+        # Limit kernel oops/warn before panic (from hardening-check)
+        "kernel.oops_limit" = lib.mkDefault 100;
+        "kernel.warn_limit" = lib.mkDefault 100;
+
+        # Disable io_uring completely (high attack surface)
+        "kernel.io_uring_disabled" = lib.mkDefault 2;
 
         # --- Network hardening ---
 
@@ -80,8 +88,8 @@
 
         # --- User space protection ---
 
-        # Restrict ptrace to CAP_SYS_PTRACE
-        "kernel.yama.ptrace_scope" = lib.mkDefault 2;
+        # Restrict ptrace to CAP_SYS_PTRACE (3 = no attach at all, 2 = admin only)
+        "kernel.yama.ptrace_scope" = lib.mkDefault 3;
 
         # Increase ASLR entropy (for x86_64)
         "vm.mmap_rnd_bits" = lib.mkDefault 32;
@@ -132,12 +140,25 @@
 
         # Enable IOMMU for DMA protection (section 21.6)
         "intel_iommu=on"
-        "amd_iommu=on"
+        "amd_iommu=force"
         # Disable early PCI DMA (fixes IOMMU hole)
         "efi=disable_early_pci_dma"
 
         # Don't blindly trust CPU RDRAND (section 18)
         "random.trust_cpu=off"
+
+        # Enable all CPU vulnerability mitigations (from hardening-check)
+        "mitigations=auto,nosmt"
+
+        # Always hash kernel pointers in printk
+        "hash_pointers=always"
+
+        # Disable TSX (Transactional Synchronization Extensions) - attack vector
+        "tsx=off"
+
+        # Disable 32-bit binary emulation (reduces attack surface)
+        # Note: May break some software that needs 32-bit support
+        "ia32_emulation=0"
       ];
 
       # ============================================================
@@ -208,8 +229,9 @@
       services.openssh.settings = {
         # Deny root login via SSH
         PermitRootLogin = lib.mkDefault "no";
-        # Use strong key exchange algorithms
+        # Use strong key exchange algorithms (including post-quantum hybrid)
         KexAlgorithms = lib.mkDefault [
+          "sntrup761x25519-sha512@openssh.com"  # Post-quantum hybrid
           "curve25519-sha256"
           "curve25519-sha256@libssh.org"
           "diffie-hellman-group16-sha512"

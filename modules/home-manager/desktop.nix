@@ -7,6 +7,7 @@
     ./emacs.nix
     ./neovim.nix
     ./plasma.nix
+    ./jailed-apps.nix
   ];
 
   flake.modules.homeManager.desktop =
@@ -18,6 +19,7 @@
         config.flake.modules.homeManager.emacs
         config.flake.modules.homeManager.neovim
         config.flake.modules.homeManager.plasma
+        config.flake.modules.homeManager.jailed-apps
       ];
 
       home.packages = with pkgs; [
@@ -25,8 +27,7 @@
         obsidian
         claude-code
 
-        # Messaging apps (from old common.nix)
-        signal-desktop
+        # Messaging apps (signal-desktop is in jailed-apps)
         thunderbird
         waypipe
         dino
