@@ -2,7 +2,12 @@
 { inputs, ... }:
 {
   flake.modules.nixos.microvm-host =
-    { config, lib, pkgs, ... }:
+    {
+      config,
+      lib,
+      pkgs,
+      ...
+    }:
     {
       # Use systemd-networkd for network management
       networking.useNetworkd = true;
@@ -22,7 +27,9 @@
         networkConfig = {
           Address = "10.10.0.1/24";
           DHCPServer = true;
+          ConfigureWithoutCarrier = true;
         };
+        linkConfig.RequiredForOnline = "no";
         dhcpServerConfig = {
           PoolOffset = 10;
           PoolSize = 200;
@@ -37,6 +44,7 @@
         networkConfig = {
           Bridge = "microvm-br";
         };
+        linkConfig.RequiredForOnline = "no";
       };
 
       # Exclude Docker veth interfaces from systemd-networkd management

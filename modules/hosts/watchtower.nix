@@ -78,6 +78,36 @@
       # networking.networkmanager.enable = true;
       networking.hostId = "5cddc8a2";
 
+      # Fix RTL8125 (r8169) carrier flapping by disabling Energy-Efficient Ethernet
+      # The r8169 driver + RTL8125 2.5GbE chip has a known issue where EEE causes
+      # the link to repeatedly drop and reconnect every few seconds.
+      systemd.services.fix-rtl8125-eee = {
+        description = "Disable EEE on RTL8125 to fix carrier flapping";
+        after = [
+          "network-pre.target"
+          "sys-subsystem-net-devices-enp7s0.device"
+        ];
+        wants = [ "sys-subsystem-net-devices-enp7s0.device" ];
+        wantedBy = [ "multi-user.target" ];
+        serviceConfig = {
+          Type = "oneshot";
+          RemainAfterExit = true;
+          ExecStart = "${pkgs.ethtool}/bin/ethtool --set-eee enp7s0 eee off";
+        };
+      };
+
+      # Tell systemd-networkd to leave enp7s0 alone (NetworkManager manages it)
+      systemd.network.networks."08-enp7s0" = {
+        matchConfig.Name = "enp7s0";
+        linkConfig = {
+          Unmanaged = true;
+          RequiredForOnline = "no";
+        };
+      };
+
+      # Only require any single interface for wait-online (bridges may have no carrier)
+      systemd.network.wait-online.anyInterface = true;
+
       time.timeZone = "Europe/Berlin";
 
       services.pulseaudio.enable = false;
@@ -166,6 +196,21 @@
         useRoutingFeatures = "client";
       };
 
+      # services.radicle = {
+      #   enable = true;
+      #   privateKeyFile = "/home/anon/.radicle/keys/radicle";
+      #   publicKey = "/home/anon/.radicle/keys/radicle.pub";
+      #   settings = {
+      #     web.pinned.repositories = [ ];
+      #     node = {
+      #       alias = "katey";
+      #       peers.type = "dynamic";
+      #       seedPolicy = {
+      #         default = "block";
+      #       };
+      #     };
+      #   };
+      # };
       virtualisation.docker = {
         enable = true;
         daemon.settings = {

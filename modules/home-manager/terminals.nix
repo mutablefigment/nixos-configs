@@ -27,6 +27,53 @@
         settings = {
           theme = "TokyoNight Moon";
           font-family = "Iosevka Nerd Font Mono";
+          keybind = [
+            # Splits (like tmux prefix+v / prefix+h)
+            "ctrl+space>v=new_split:right"
+            "ctrl+space>h=new_split:down"
+
+            # New tab (like tmux prefix+w)
+            "ctrl+space>w=new_tab"
+
+            # Navigate splits (like tmux C-h/j/k/l)
+            "ctrl+h=goto_split:left"
+            "ctrl+j=goto_split:down"
+            "ctrl+k=goto_split:up"
+            "ctrl+l=goto_split:right"
+
+            # Navigate tabs (like tmux C-M-j / C-M-k)
+            "ctrl+alt+j=previous_tab"
+            "ctrl+alt+k=next_tab"
+
+            # Resize splits (like tmux prefix+r then h/j/k/l)
+            "ctrl+shift+h=resize_split:left,10"
+            "ctrl+shift+j=resize_split:down,10"
+            "ctrl+shift+k=resize_split:up,10"
+            "ctrl+shift+l=resize_split:right,10"
+
+            # Zoom split (like tmux prefix+z)
+            "ctrl+space>z=toggle_split_zoom"
+
+            # Equalize splits
+            "ctrl+space>equal=equalize_splits"
+
+            # Rename tab (like tmux prefix+n)
+            "ctrl+space>n=prompt_surface_title"
+
+            # Close surface (like tmux prefix+x)
+            "ctrl+space>x=close_surface"
+
+            # Essentials (since defaults are cleared)
+            "ctrl+shift+c=copy_to_clipboard"
+            "ctrl+shift+v=paste_from_clipboard"
+            "ctrl+equal=increase_font_size:1"
+            "ctrl+minus=decrease_font_size:1"
+            "ctrl+zero=reset_font_size"
+            "ctrl+shift+n=toggle_fullscreen"
+            "ctrl+shift+i=inspector:toggle"
+            "ctrl+shift+comma=open_config"
+            "ctrl+shift+r=reload_config"
+          ];
         };
       };
 
