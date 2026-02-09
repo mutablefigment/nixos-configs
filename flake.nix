@@ -57,8 +57,8 @@
 
     # Sandboxing
     jail-nix = {
-      url = "github:MohrJonas/jail.nix";
-      # inputs.nixpkgs.follows = "nixpkgs";
+      url = "sourcehut:~alexdavid/jail.nix";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     # Secrets management
@@ -114,12 +114,12 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # Browsers and shells
-    zen-browser.url = "github:youwen5/zen-browser-flake";
-    noctalia = {
-      url = "github:noctalia-dev/noctalia-shell";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    # # Browsers and shells
+    # zen-browser.url = "github:youwen5/zen-browser-flake";
+    # noctalia = {
+    #   url = "github:noctalia-dev/noctalia-shell";
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    # };
   };
 
   outputs =

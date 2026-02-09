@@ -6,7 +6,7 @@
     {
       programs.tmux = {
         enable = true;
-        shell = "${pkgs.zsh}/bin/zsh";
+        shell = "${pkgs.nushell}/bin/nu";
         terminal = "tmux-256color";
 
         plugins = with pkgs; [

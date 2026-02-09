@@ -36,7 +36,7 @@
       # Primary user
       users.users.${config.meta.owner.username} = {
         isNormalUser = true;
-        shell = pkgs.zsh;
+        shell = pkgs.nushell;
         description = config.meta.owner.username;
         ignoreShellProgramCheck = true;
         extraGroups = [
@@ -66,6 +66,6 @@
       };
 
       # OpenSSH
-      services.openssh.enable = true;
+      # services.openssh.enable = true;
     };
 }

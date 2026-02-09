@@ -460,17 +460,17 @@
     },
     "jail-nix": {
       "locked": {
-        "lastModified": 1768943323,
-        "narHash": "sha256-UhgDNhfMhIGRHrojQ4O0X/rT80W3URrbXOn4NIirzoo=",
-        "owner": "MohrJonas",
+        "lastModified": 1765903853,
+        "narHash": "sha256-buoPpx7moJzAXbLuHAImn6x9fGRdk3x0T57goPv1vnc=",
+        "owner": "~alexdavid",
         "repo": "jail.nix",
-        "rev": "a045ce7ba53ff7f2a158963506781aafbe5c2580",
-        "type": "github"
+        "rev": "bf9f49c8118e7a77b68a675dbe26e93e91412066",
+        "type": "sourcehut"
       },
       "original": {
-        "owner": "MohrJonas",
+        "owner": "~alexdavid",
         "repo": "jail.nix",
-        "type": "github"
+        "type": "sourcehut"
       }
     },
     "lanzaboote": {
@@ -673,42 +673,6 @@
         "type": "github"
       }
     },
-    "nixpkgs_5": {
-      "locked": {
-        "lastModified": 1769018530,
-        "narHash": "sha256-MJ27Cy2NtBEV5tsK+YraYr2g851f3Fl1LpNHDzDX15c=",
-        "owner": "nixos",
-        "repo": "nixpkgs",
-        "rev": "88d3861acdd3d2f0e361767018218e51810df8a1",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nixos",
-        "ref": "nixos-unstable",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
-    "noctalia": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1769600154,
-        "narHash": "sha256-8+YW8blYlBKGc/ybZQD400f+O6TQYy4q/g4wqEU7zFI=",
-        "owner": "noctalia-dev",
-        "repo": "noctalia-shell",
-        "rev": "942ad7be3cfcaeacd51959aa141f243959532e95",
-        "type": "github"
-      },
-      "original": {
-        "owner": "noctalia-dev",
-        "repo": "noctalia-shell",
-        "type": "github"
-      }
-    },
     "plasma-manager": {
       "inputs": {
         "home-manager": [
@@ -818,11 +782,9 @@
         "morph": "morph",
         "nixos-hardware": "nixos-hardware",
         "nixpkgs": "nixpkgs_4",
-        "noctalia": "noctalia",
         "plasma-manager": "plasma-manager",
         "proxmox-nixos": "proxmox-nixos",
-        "ssh-keys": "ssh-keys",
-        "zen-browser": "zen-browser"
+        "ssh-keys": "ssh-keys"
       }
     },
     "rust-overlay": {
@@ -1040,24 +1002,6 @@
       "original": {
         "owner": "numtide",
         "repo": "flake-utils",
-        "type": "github"
-      }
-    },
-    "zen-browser": {
-      "inputs": {
-        "nixpkgs": "nixpkgs_5"
-      },
-      "locked": {
-        "lastModified": 1769315176,
-        "narHash": "sha256-w1aX0LxNLdhAB4nGsD+3U4XBzr1nfKza/LxT3cD4h28=",
-        "owner": "youwen5",
-        "repo": "zen-browser-flake",
-        "rev": "0c4d40528c156b00067df5e90e5dca8dfe2e2735",
-        "type": "github"
-      },
-      "original": {
-        "owner": "youwen5",
-        "repo": "zen-browser-flake",
         "type": "github"
       }
     }

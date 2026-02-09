@@ -4,10 +4,10 @@
   imports = [
     ./vscode.nix
     ./zed.nix
-    ./emacs.nix
     ./neovim.nix
     ./plasma.nix
     ./jailed-apps.nix
+    ./browsers.nix
   ];
 
   flake.modules.homeManager.desktop =
@@ -16,10 +16,10 @@
       imports = [
         config.flake.modules.homeManager.vscode
         config.flake.modules.homeManager.zed
-        config.flake.modules.homeManager.emacs
         config.flake.modules.homeManager.neovim
         config.flake.modules.homeManager.plasma
         config.flake.modules.homeManager.jailed-apps
+        config.flake.modules.homeManager.browsers
       ];
 
       home.packages = with pkgs; [

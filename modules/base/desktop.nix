@@ -39,7 +39,7 @@
       services.xserver.enable = true;
       services.xserver.xkb = {
         layout = "us";
-        options = "ctrl:nocaps";
+        options = "esc:nocaps";
       };
 
       # KDE Plasma

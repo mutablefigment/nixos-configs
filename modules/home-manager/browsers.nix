@@ -13,7 +13,7 @@
         gpu
         (try-rw-bind (noescape "~/.mozilla") (noescape "~/.mozilla"))
         (try-rw-bind (noescape "~/Downloads") (noescape "~/Downloads"))
-        (set-env "LD_PRELOAD" "")
+        # (set-env "LD_PRELOAD" "")
       ]);
     in
     {
@@ -25,7 +25,7 @@
 
         firefox = {
           enable = true;
-          package = firefoxJailed;
+          package = pkgs.firefox; #firefoxJailed;
 
           profiles.anon = {
             settings = {

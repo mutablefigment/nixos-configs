@@ -2,13 +2,19 @@
 { config, inputs, ... }:
 {
   configurations.nixos.watchtower.module =
-    { pkgs, lib, modulesPath, ... }:
+    {
+      pkgs,
+      lib,
+      modulesPath,
+      ...
+    }:
     {
       imports = [
         (modulesPath + "/installer/scan/not-detected.nix")
         inputs.lanzaboote.nixosModules.lanzaboote
         inputs.microvm.nixosModules.host
-      ] ++ (with config.flake.modules.nixos; [
+      ]
+      ++ (with config.flake.modules.nixos; [
         base
         desktop
         microvm-host
@@ -16,31 +22,45 @@
       ]);
 
       # Hardware configuration
-      boot.initrd.availableKernelModules = [ "nvme" "xhci_pci" "ahci" "usbhid" "usb_storage" "sd_mod" "sr_mod" ];
+      boot.initrd.availableKernelModules = [
+        "nvme"
+        "xhci_pci"
+        "ahci"
+        "usbhid"
+        "usb_storage"
+        "sd_mod"
+        "sr_mod"
+      ];
       boot.initrd.kernelModules = [ ];
       boot.kernelModules = [ "kvm-amd" ];
       boot.extraModulePackages = [ ];
 
-      boot.initrd.luks.devices."luks-dcc62daf-e1d4-4368-a928-ab8c4e265a6d".device = "/dev/disk/by-uuid/dcc62daf-e1d4-4368-a928-ab8c4e265a6d";
+      boot.initrd.luks.devices."luks-dcc62daf-e1d4-4368-a928-ab8c4e265a6d".device =
+        "/dev/disk/by-uuid/dcc62daf-e1d4-4368-a928-ab8c4e265a6d";
 
       fileSystems."/" = {
         device = "/dev/disk/by-uuid/ec88757a-1a29-47e8-8245-820c6d9a89e0";
         fsType = "ext4";
       };
 
-      boot.initrd.luks.devices."luks-37c63ff8-6890-4973-96f1-0b84a81f656b".device = "/dev/disk/by-uuid/37c63ff8-6890-4973-96f1-0b84a81f656b";
+      boot.kernelPackages = pkgs.linuxPackages_zen;
+      boot.initrd.luks.devices."luks-37c63ff8-6890-4973-96f1-0b84a81f656b".device =
+        "/dev/disk/by-uuid/37c63ff8-6890-4973-96f1-0b84a81f656b";
 
       fileSystems."/boot" = {
         device = "/dev/disk/by-uuid/C561-D936";
         fsType = "vfat";
-        options = [ "fmask=0077" "dmask=0077" ];
+        options = [
+          "fmask=0077"
+          "dmask=0077"
+        ];
       };
 
       swapDevices = [
         { device = "/dev/disk/by-uuid/b53b70e5-0166-46c4-a31d-95514c95b8fe"; }
       ];
 
-      networking.useDHCP = lib.mkDefault true;
+      # networking.useDHCP = lib.mkDefault true;
       nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
       hardware.cpu.amd.updateMicrocode = lib.mkDefault true;
 
@@ -55,7 +75,7 @@
       boot.supportedFilesystems = [ "zfs" ];
 
       networking.hostName = "watchtower";
-      networking.networkmanager.enable = true;
+      # networking.networkmanager.enable = true;
       networking.hostId = "5cddc8a2";
 
       time.timeZone = "Europe/Berlin";

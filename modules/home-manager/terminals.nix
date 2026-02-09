@@ -25,7 +25,7 @@
         enableZshIntegration = true;
         clearDefaultKeybinds = true;
         settings = {
-          theme = "tokyonight";
+          theme = "TokyoNight Moon";
           font-family = "Iosevka Nerd Font Mono";
         };
       };
